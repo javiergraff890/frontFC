@@ -1,0 +1,48 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.conteiner {
+  width: 420px;
+  background-color: rgb(50, 38, 50);
+  color: #ffff;
+  display:flex;
+  justify-content: center;
+}
+
+.conteiner h1 {
+  font-size: 36;
+  text-align: center;
+}
+
+.input-div {
+  display: flex; /* Utiliza el modelo de caja flexible */
+  justify-content: center; /* Centra horizontalmente el contenido */
+  align-items: center; /* Centra verticalmente el contenido */
+  padding: 5px;
+}
+
+.input-div input {
+  height: 100%;
+  background: transparent;
+  border:none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, .2);
+  border-radius: 40px;
+  padding: 4px;
+}
+
+.conteinerCampos{
+  max-width: 300px;
+}
+
+.btn {
+  width: 100%;
+  padding: 4px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
