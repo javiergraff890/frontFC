@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import './Cajas.css'
 
-export default function Cajas(){
+export default function Cajas({userId}){
     return (
         <div>
-            <TablaCajas />
+            <TablaCajas userId={userId} />
         </div>
     );
 }
 
-function TablaCajas(){
+function TablaCajas({userId}){
     const [cajas, setCajas] = useState([]);
 
     async function getCajas(){
@@ -22,24 +22,42 @@ function TablaCajas(){
 
     useEffect( () => {
         getCajas().then( data => {
-            //var nuevascajas = []
-            //for (const clave in data) {
-                //nuevascajas.push(<div key={clave.id}>{clave.nombre} {clave.saldo}</div>)
-            //    nuevascajas.push(clave)
-           // }
             setCajas(data)
-            // console.log("nuevas:")
-            // console.log(nuevascajas);
-            // console.log("nuevasfin")
         })      
     }, [])
     
     const eventEliminar = (id) => {
         console.log("toque eliminar al id= "+id)
+        
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        };
+
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const nombre = document.getElementById("nombre").value;
+        const saldo = document.getElementById("saldo").value;
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "caja" : {
+                    "nombre" : nombre,
+                    "saldo" : saldo
+                },
+                "idUsuario": userId
+            })
+        };
+    
+        fetch('https://localhost:7178/caja', requestOptions)
+        .then(response => 
+            console.log(response)
+            ).catch(error => console.log(error));
+
     }
     return (
         <>
@@ -68,8 +86,8 @@ function TablaCajas(){
         <div>
             <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
                 <h2>Nueva caja</h2>
-                <input type="text" id="nombre" name="nombre" placeholder='Nombre de la caja'></input>
-                <input type="number" id="saldo" name="saldo" placeholder='saldo inicial'></input>
+                <input type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
+                <input type="number" step="0.01" id="saldo" name="saldo" placeholder='saldo inicial' required></input>
                 <button type="submit">Enviar</button>
             </form>
         </div>

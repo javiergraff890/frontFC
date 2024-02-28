@@ -81,7 +81,7 @@ function setCajaActivo(){
       <main>
           { componenteActivo === 0 && <InicioSesion nuevoInicio={nuevoInicio}/>}
           { componenteActivo === 1 && <h1>Bienvenido {userName}</h1>}
-          { componenteActivo === 2 && <Cajas />}
+          { componenteActivo === 2 && <Cajas userId={userId} />}
         </main>
 
         <footer>
