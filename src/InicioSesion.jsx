@@ -49,7 +49,7 @@ function Signup({toggle}){
 
 function Login({toggle, nuevoInicio}){
     const [userName, setuserName] = useState('')
-
+    const [datosCorrectos, setDatosCorrectos] = useState(true);
     async function login(){
         const pass = document.getElementById('password').value;
         const response = await fetch("https://localhost:7178/user/Login", {
@@ -62,11 +62,10 @@ function Login({toggle, nuevoInicio}){
                     "password": pass
                   })
             })
-
+            
             if (!response.ok) {
                 throw new Error(response.status); 
               }
-            console.log(response.status);
            
             const token = await response.text();
             return token;
@@ -85,7 +84,15 @@ function Login({toggle, nuevoInicio}){
             //console.log(tokenDecoded)
             nuevoInicio(token);
         }).catch(error => {
-            console.error('Error:', error);
+            if (error == "Error: 401"){
+                nuevoInicio('401');
+                setDatosCorrectos(false);
+                console.error("no autorizado");
+            } else {
+                console.error(error); 
+            }
+                
+            
         })
     }
 
@@ -107,6 +114,13 @@ function Login({toggle, nuevoInicio}){
                 <box-icon name='lock-alt' color='#ffffff' ></box-icon>
                 <input type="password" id="password" name="password" placeholder="Contraseña" required/>
             </div>
+            {
+                !datosCorrectos ? (
+                    <div>
+                        Usuario o Password Incorrectos
+                    </div>
+                ) : <></>
+            }
             <div className="input-div">
                 <box-icon name='lock-alt' color='rgba(255,255,255,0)' ></box-icon>
                 <button className="btn" type="submit">Iniciar Sesión</button>
