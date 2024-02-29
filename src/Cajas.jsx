@@ -54,9 +54,15 @@ function TablaCajas({userId}){
         fetch('https://localhost:7178/caja', requestOptions)
         .then(response => {
             console.log(response)
-            getCajas().then( data => {
-                setCajas(data)
-            })
+            if (response.status == 204){
+                console.log("se ingreso nombre repetido");
+            } else {
+                getCajas().then( data => {
+                    setCajas(data)
+                })
+            }
+            
+
 
         }
             
@@ -94,6 +100,7 @@ function TablaCajas({userId}){
                 <input type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
                 <input type="number" step="0.01" id="saldo" name="saldo" placeholder='saldo inicial' required></input>
                 <button type="submit">Enviar</button>
+                
             </form>
         </div>
             
