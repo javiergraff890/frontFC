@@ -54,11 +54,18 @@ function TablaCajas({userId}){
         };
     
         fetch('https://localhost:7178/caja', requestOptions)
-        .then(response => 
+        .then(response => {
             console.log(response)
+            getCajas().then( data => {
+                setCajas(data)
+            })
+
+        }
+            
             ).catch(error => console.log(error));
 
-    }
+
+        }
     return (
         <>
         <table className='tabla-cajas'>
