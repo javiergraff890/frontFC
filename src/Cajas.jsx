@@ -45,11 +45,9 @@ function TablaCajas({userId}){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                "caja" : {
                     "nombre" : nombre,
-                    "saldo" : saldo
-                },
-                "idUsuario": userId
+                    "saldo" : saldo,
+                    "userId": userId
             })
         };
     
