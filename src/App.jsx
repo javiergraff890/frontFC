@@ -1,6 +1,7 @@
 import './App.css'
 import InicioSesion from './InicioSesion.jsx'
 import Cajas from './Cajas.jsx'
+import Movimientos from './Movimientos.jsx'
 import {useState, useEffect } from 'react'
 import { jwtDecode } from "jwt-decode";
 
@@ -51,6 +52,10 @@ function setCajaActivo(){
   setComponenteActivo(2);
 }
 
+function setMovActivo(){
+  setComponenteActivo(3);
+}
+
   return (
     <>
       <header>
@@ -66,7 +71,7 @@ function setCajaActivo(){
           : (
               <>
                 <li><a href="#" onClick={setCajaActivo}>Cajas</a></li>
-                <li><a href="#">Movimientos</a></li>
+                <li><a href="#" onClick={setMovActivo}>Movimientos</a></li>
                 <li><a href="#" onClick = {cerrarSesion}>Salir</a></li>
               </>
           )}
@@ -82,6 +87,7 @@ function setCajaActivo(){
           { componenteActivo === 0 && <InicioSesion nuevoInicio={nuevoInicio}/>}
           { componenteActivo === 1 && <h1>Bienvenido {userName}</h1>}
           { componenteActivo === 2 && <Cajas userId={userId} />}
+          { componenteActivo === 3 && <Movimientos userId={userId} />}
         </main>
 
         <footer>
