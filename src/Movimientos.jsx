@@ -9,6 +9,27 @@ export default function Movimientos(){
 
 function TablaMovimientos () {
     const [movs, setMovs] = useState([]);
+    const [cajas, setCajas] = useState([]);
+
+    useEffect( () => {
+        console.log("catidad de cajas = "+cajas.length)
+    }, [cajas]);
+
+    async function getCajas(){
+        const token = localStorage.getItem('token');
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        };
+
+        const response = await fetch('https://localhost:7178/caja',requestOptions);
+
+         const data = await response.json();
+         console.log('Datos obtenidos:', data);
+         return data;    
+    }
 
     async function getMovimientos(){
         const token = localStorage.getItem('token');
@@ -29,13 +50,20 @@ function TablaMovimientos () {
     useEffect( () => {
         getMovimientos().then( data => {
             setMovs(data)
-        })      
+        })
+        getCajas().then( data => {
+            setCajas(data)
+        })        
+        console.log(cajas.length)
     }, [])
 
     const eventEliminar = (id) => {}
 
+    const handleSubmit = () =>{}
+
     return (
-        <table className='tabla-cajas'>
+        <>
+        <table className='tabla-movimientos'>
             {/* <caption>Cajas</caption> */}
             <thead>
                 <tr>
@@ -59,5 +87,21 @@ function TablaMovimientos () {
         </tbody>
         </table>
 
+        <div>
+            <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
+                <h2>Nueva caja</h2>
+                <input type="text" id="concepto" name="concepto" placeholder='Concepto' required></input>
+                <input type="number" step="0.01" id="valor" name="valor" placeholder='Valor' required></input>
+                <select>
+                    {
+                        cajas.map( (elem) => {
+                            <option key={elem.idCaja} value={elem.idCaja}>{elem.concepto}</option>
+                        } )
+                    }
+                </select>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+        </>
     );
 }
