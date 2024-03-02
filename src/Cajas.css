@@ -20,3 +20,12 @@ td, th {
 .form-nueva-caja input{
     margin-right: 5px;
 }
+
+.form-nueva-caja-spanDuplicado-visible{
+    visibility: visible;
+    color:brown;
+}
+
+.form-nueva-caja-spanDuplicado-oculto{
+    visibility: hidden;
+}

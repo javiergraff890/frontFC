@@ -11,9 +11,20 @@ export default function Cajas({userId}){
 
 function TablaCajas({userId}){
     const [cajas, setCajas] = useState([]);
+    const [nombreDuplicado, setnombreDuplicado] = useState(false)
+
+    
 
     async function getCajas(){
-        const response = await fetch('https://localhost:7178/caja');
+        const token = localStorage.getItem('token');
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        };
+
+        const response = await fetch('https://localhost:7178/caja',requestOptions);
 
          const data = await response.json();
          console.log('Datos obtenidos:', data);
@@ -30,10 +41,19 @@ function TablaCajas({userId}){
         console.log("toque eliminar al id= "+id)
         
         const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
+            method: 'DELETE',
+            // headers: { 'Content-Type': 'application/json' },
+            // body: JSON.stringify({})
         };
+
+        fetch('https://localhost:7178/caja/'+id, requestOptions).then(
+            response => {
+                console.log(response)
+                getCajas().then( data => {
+                    setCajas(data)
+                })
+            }
+        )
 
     }
 
@@ -56,20 +76,15 @@ function TablaCajas({userId}){
             console.log(response)
             if (response.status == 204){
                 console.log("se ingreso nombre repetido");
+                setnombreDuplicado(true);
             } else {
                 getCajas().then( data => {
                     setCajas(data)
                 })
+                if (nombreDuplicado)
+                    setnombreDuplicado(false);
             }
-            
-
-
-        }
-            
-            ).catch(error => console.log(error));
-
-
-        }
+        }).catch(error => console.log(error));}
     return (
         <>
         <table className='tabla-cajas'>
@@ -100,10 +115,13 @@ function TablaCajas({userId}){
                 <input type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
                 <input type="number" step="0.01" id="saldo" name="saldo" placeholder='saldo inicial' required></input>
                 <button type="submit">Enviar</button>
-                
+                <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
+                :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
             </form>
         </div>
             
         </>
     );
 }
+
+
