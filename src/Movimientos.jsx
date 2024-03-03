@@ -1,5 +1,5 @@
 import './Movimientos.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Movimientos(){
     return (
@@ -10,6 +10,10 @@ export default function Movimientos(){
 function TablaMovimientos () {
     const [movs, setMovs] = useState([]);
     const [cajas, setCajas] = useState([]);
+    const inputConceptoRef = useRef(null);
+    const inputValorRef = useRef(null);
+    const selectRef = useRef(null);
+    
 
     useEffect( () => {
         console.log("catidad de cajas = "+cajas.length)
@@ -48,21 +52,51 @@ function TablaMovimientos () {
     }
 
     useEffect( () => {
+        getCajas().then( data => {
+            setCajas(data)
+        })
         getMovimientos().then( data => {
             setMovs(data)
         })
-        getCajas().then( data => {
-            setCajas(data)
-        })        
+                
         console.log(cajas.length)
     }, [])
 
     const eventEliminar = (id) => {}
 
-    const handleSubmit = () =>{}
+    const handleSubmit = (event) =>{
+        event.preventDefault()
+        const concepto = inputConceptoRef.current.value;
+        const valor = inputValorRef.current.value;
+        const cajaSeleccionada = selectRef.current.value;
+        console.log("voy a insertar = "+concepto+" "+valor+" "+cajaSeleccionada)
+
+        const token = localStorage.getItem('token');
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                // 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+                body: JSON.stringify({
+                    "concepto" : concepto,
+                     "valor" :valor,
+                     "idCaja": cajaSeleccionada
+                })
+            
+        };
+
+        fetch('https://localhost:7178/movimiento',requestOptions).then(
+            response => {
+                console.log(response);
+                getMovimientos().then( data => {
+                    setMovs(data)
+                })
+            }).catch(error => console.log(error));
+    }
 
     return (
-        <>
+        <div className="container">
         <table className='tabla-movimientos'>
             {/* <caption>Cajas</caption> */}
             <thead>
@@ -89,19 +123,19 @@ function TablaMovimientos () {
 
         <div>
             <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
-                <h2>Nueva caja</h2>
-                <input type="text" id="concepto" name="concepto" placeholder='Concepto' required></input>
-                <input type="number" step="0.01" id="valor" name="valor" placeholder='Valor' required></input>
-                <select>
+                <h2>Nuevo Movimiento</h2>
+                <input ref={inputConceptoRef} type="text" id="concepto" name="concepto" placeholder='Concepto' required></input>
+                <input ref={inputValorRef} type="number" step="0.01" id="valor" name="valor" placeholder='Valor' required></input>
+                <select ref={selectRef}>
                     {
-                        cajas.map( (elem) => {
-                            <option key={elem.idCaja} value={elem.idCaja}>{elem.concepto}</option>
-                        } )
+                        cajas.map( (elem) => 
+                            <option key={elem.id} value={elem.id}>{elem.nombre}</option>
+                         )
                     }
                 </select>
                 <button type="submit">Enviar</button>
             </form>
         </div>
-        </>
+        </div>
     );
 }
