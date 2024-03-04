@@ -9,14 +9,15 @@ export default function Movimientos(){
 
 function TablaMovimientos () {
     const [movs, setMovs] = useState([]);
-    const [cajas, setCajas] = useState([]);
+    const [cajas, setCajas] = useState({});
     const inputConceptoRef = useRef(null);
     const inputValorRef = useRef(null);
     const selectRef = useRef(null);
     
 
     useEffect( () => {
-        console.log("catidad de cajas = "+cajas.length)
+        console.log("catidad de cajas = "+Object.values(cajas).length)
+        console.log(cajas)
     }, [cajas]);
 
     async function getCajas(){
@@ -32,7 +33,10 @@ function TablaMovimientos () {
 
          const data = await response.json();
          console.log('Datos obtenidos:', data);
-         return data;    
+         return data.reduce( (acc,elemento) => {
+            acc[elemento.id] = elemento;
+            return acc;
+         }, {});    
     }
 
     async function getMovimientos(){
@@ -64,6 +68,13 @@ function TablaMovimientos () {
 
     const eventEliminar = (id) => {}
 
+    function formatFecha(fecha){
+        const fechasplit = fecha.split("T");
+        const dia = fechasplit[0];
+        const hora = fechasplit[1].substring(0,5);
+        return dia + " ("+ hora+")";
+    }
+
     const handleSubmit = (event) =>{
         event.preventDefault()
         const concepto = inputConceptoRef.current.value;
@@ -75,13 +86,14 @@ function TablaMovimientos () {
         const requestOptions = {
             method: 'POST',
             headers: {
-                // 'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
                 body: JSON.stringify({
                     "concepto" : concepto,
                      "valor" :valor,
-                     "idCaja": cajaSeleccionada
+                     "idCaja": cajaSeleccionada,
+                     "fecha" : "2024-03-04T20:36:15.994Z"
                 })
             
         };
@@ -101,6 +113,7 @@ function TablaMovimientos () {
             {/* <caption>Cajas</caption> */}
             <thead>
                 <tr>
+                    <th>Fecha</th>
                     <th>Concepto</th>
                     <th>Valor</th>
                     <th>Caja</th>
@@ -111,9 +124,10 @@ function TablaMovimientos () {
         {
             movs.map( (elem) =>
             <tr key={elem.id}>
+                <td>{formatFecha(elem.fecha)}</td>
                 <td>{elem.concepto}</td>
                 <td>{elem.valor}</td>
-                <td>{elem.idCaja}</td>
+                <td>{cajas[elem.idCaja].nombre}</td>
                 <td><button onClick={() => eventEliminar(elem.id)}>X</button></td>
             </tr>
             )
@@ -128,7 +142,7 @@ function TablaMovimientos () {
                 <input ref={inputValorRef} type="number" step="0.01" id="valor" name="valor" placeholder='Valor' required></input>
                 <select ref={selectRef}>
                     {
-                        cajas.map( (elem) => 
+                        Object.values(cajas).map( (elem) => 
                             <option key={elem.id} value={elem.id}>{elem.nombre}</option>
                          )
                     }
