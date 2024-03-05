@@ -1,6 +1,6 @@
 import './Movimientos.css'
 import { useState, useEffect, useRef } from 'react'
-
+import {fechaActual} from './funciones.js'
 export default function Movimientos(){
     return (
         <TablaMovimientos />
@@ -66,7 +66,24 @@ function TablaMovimientos () {
         console.log(cajas.length)
     }, [])
 
-    const eventEliminar = (id) => {}
+    const eventEliminar = (id) => {
+        const token = localStorage.getItem('token')
+        const requestOptions = {
+            method : 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+
+        fetch('https://localhost:7178/movimiento/'+id, requestOptions).then(
+            response => {
+                console.log(response);
+                getMovimientos().then( data => {
+                    setMovs(data)
+                })
+            }
+        ).catch( ex => console.log(ex))
+    }
 
     function formatFecha(fecha){
         const fechasplit = fecha.split("T");
@@ -74,6 +91,8 @@ function TablaMovimientos () {
         const hora = fechasplit[1].substring(0,5);
         return dia + " ("+ hora+")";
     }
+
+    
 
     const handleSubmit = (event) =>{
         event.preventDefault()
@@ -93,7 +112,7 @@ function TablaMovimientos () {
                     "concepto" : concepto,
                      "valor" :valor,
                      "idCaja": cajaSeleccionada,
-                     "fecha" : "2024-03-04T20:36:15.994Z"
+                     "fecha" : fechaActual()
                 })
             
         };

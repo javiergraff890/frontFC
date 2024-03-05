@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './Cajas.css'
+import {fechaActual} from './funciones.js'
 
 export default function Cajas({userId}){
     return (
@@ -65,9 +66,12 @@ function TablaCajas({userId}){
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                "caja" : {
                     "nombre" : nombre,
                     "saldo" : saldo,
                     "userId": userId
+                },
+                "fecha" : fechaActual()   
             })
         };
     
