@@ -2,7 +2,7 @@ import './App.css'
 import InicioSesion from './InicioSesion.jsx'
 import Cajas from './Cajas.jsx'
 import Movimientos from './Movimientos.jsx'
-import {useState, useEffect } from 'react'
+import {useState, useEffect, useRef } from 'react'
 import { jwtDecode } from "jwt-decode";
 
 function App() {
@@ -10,20 +10,24 @@ const [logueado, setLogueado] = useState(false);
 const [userName, setUserName] = useState('');
 const [userId, setUserId] = useState(-1);
 const [componenteActivo, setComponenteActivo] = useState(0);
-
+const initialized = useRef(false);
 
 useEffect( () => {
-  const token = localStorage.getItem('token');
-  console.log(token);
-  console.log("Entreal usefect")
-  if (token !== null){
-    console.log(token);
-    const tokenDecoded = jwtDecode(token);
-    setComponenteActivo(1);
-    setUserId(tokenDecoded.userId);
-    setUserName(tokenDecoded.unique_name);
-    setLogueado(true)
+
+  if (!initialized.current){
+    initialized.current = true;
+    const token = localStorage.getItem('token');
+    console.log("token desde usefect -> app.jsx "+token);
+    console.log("Entreal usefect")
+    if (token !== null){
+      const tokenDecoded = jwtDecode(token);
+      setComponenteActivo(1);
+      setUserId(tokenDecoded.userId);
+      setUserName(tokenDecoded.unique_name);
+      setLogueado(true)
+    }
   }
+  
 }, [])
 // useEffect( () => console.log("ususario logueado = id: "+userId+" username: "+userName),[userName]);
 
