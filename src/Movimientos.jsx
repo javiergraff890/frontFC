@@ -13,11 +13,19 @@ function TablaMovimientos () {
     const inputConceptoRef = useRef(null);
     const inputValorRef = useRef(null);
     const selectRef = useRef(null);
-    
+    const initialized = useRef(false);
+    const initialized2 = useRef(false);
 
     useEffect( () => {
-        console.log("catidad de cajas = "+Object.values(cajas).length)
-        console.log(cajas)
+        if (initialized.current){
+            console.log("catidad de cajas = "+Object.values(cajas).length)
+            console.log(cajas)
+        //     console.log("catidad de movs = "+Object.values(movs).length)
+        //    
+         } else {
+            initialized.current = true;
+         }
+        
     }, [cajas]);
 
     async function getCajas(){
@@ -56,14 +64,31 @@ function TablaMovimientos () {
     }
 
     useEffect( () => {
-        getCajas().then( data => {
-            setCajas(data)
-        })
-        getMovimientos().then( data => {
-            setMovs(data)
-        })
-                
-        console.log(cajas.length)
+        if (initialized2.current){
+            Promise.all([
+                getCajas(),
+                getMovimientos()
+            ]).then( ([listacajas,listamovimientos]) => {
+                setCajas(listacajas)
+                setMovs(listamovimientos)
+            }).catch( error => {
+                console.error('Error al cargar datos:', error);
+            })
+        } else {
+            initialized2.current = true;
+        }
+
+            // initialized.current = true;
+            // getCajas().then( data => {
+            //     setCajas(data)
+            // })
+            // getMovimientos().then( data => {
+            //     setMovs(data)
+            // })
+            // console.log("a ver cuantas veces");       
+            // console.log(cajas.length)
+        //}
+        
     }, [])
 
     const eventEliminar = (id) => {
