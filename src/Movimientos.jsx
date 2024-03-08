@@ -15,6 +15,8 @@ function TablaMovimientos () {
     const selectRef = useRef(null);
     const initialized = useRef(false);
     const initialized2 = useRef(false);
+    const [paginaActual, setpaginaActual] = useState(1);
+    const [cantidadPorPagina, setcantidadPorPagina] = useState(6);
 
     useEffect( () => {
         if (initialized.current){
@@ -40,7 +42,7 @@ function TablaMovimientos () {
         const response = await fetch('https://localhost:7178/caja',requestOptions);
 
          const data = await response.json();
-         console.log('Datos obtenidos:', data);
+         console.log('Datos obtenidos (cajas):', data);
          return data.reduce( (acc,elemento) => {
             acc[elemento.id] = elemento;
             return acc;
@@ -56,10 +58,10 @@ function TablaMovimientos () {
             }
         };
 
-        const response = await fetch('https://localhost:7178/movimiento',requestOptions);
+        const response = await fetch('https://localhost:7178/movimiento/'+paginaActual+'/'+cantidadPorPagina,requestOptions);
 
          const data = await response.json();
-         console.log('Datos obtenidos:', data);
+         console.log('Datos obtenidos (movs):', data);
          return data;    
     }
 
