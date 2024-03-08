@@ -15,8 +15,10 @@ function TablaMovimientos () {
     const selectRef = useRef(null);
     const initialized = useRef(false);
     const initialized2 = useRef(false);
-    const [paginaActual, setpaginaActual] = useState(1);
-    const [cantidadPorPagina, setcantidadPorPagina] = useState(6);
+    const initialized3 = useRef(false);
+    const [paginaActual, setpaginaActual] = useState(0);
+    const [cantidadPorPagina, setcantidadPorPagina] = useState(3);
+    const [hayOtraPag, sethayOtraPag] = useState(true);
 
     useEffect( () => {
         if (initialized.current){
@@ -57,12 +59,16 @@ function TablaMovimientos () {
                 'Authorization': `Bearer ${token}`
             }
         };
-
-        const response = await fetch('https://localhost:7178/movimiento/'+paginaActual+'/'+cantidadPorPagina,requestOptions);
+        const inicial = (paginaActual) * cantidadPorPagina + 1;
+        const endpoint = 'https://localhost:7178/movimiento/'+inicial+'/'+cantidadPorPagina;
+        console.log("voy a enviar "+endpoint)
+        const response = await fetch(endpoint,requestOptions);
 
          const data = await response.json();
+         
          console.log('Datos obtenidos (movs):', data);
-         return data;    
+         sethayOtraPag(data.siguiente);
+         return data.movs;    
     }
 
     useEffect( () => {
@@ -153,6 +159,31 @@ function TablaMovimientos () {
             }).catch(error => console.log(error));
     }
 
+    const clickSiguiente = () => {
+        if (hayOtraPag)
+            setpaginaActual(paginaActual+1);
+    }
+
+    const clickAnterior = () => {
+        if (paginaActual > 0){
+            setpaginaActual(paginaActual-1);
+        }
+    }
+
+    useEffect( () => {
+        if (initialized3.current){
+            getMovimientos().then( data => {
+                setMovs(data)
+            })
+            const inicial = (paginaActual) * cantidadPorPagina + 1;
+            console.log("inicial "+inicial+" pag actual = "+paginaActual);
+        } else {
+            initialized3.current=true;
+        }
+        
+        
+    },[paginaActual])
+
     return (
         <div className="container">
         <table className='tabla-movimientos'>
@@ -180,7 +211,11 @@ function TablaMovimientos () {
         }
         </tbody>
         </table>
-
+        <div>
+            <button onClick={clickAnterior}>anterior</button>
+            <button onClick={clickSiguiente}>siguiente</button>
+            <span>pagina actual {paginaActual}</span>
+        </div>
         <div>
             <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
                 <h2>Nuevo Movimiento</h2>
@@ -196,6 +231,7 @@ function TablaMovimientos () {
                 <button type="submit">Enviar</button>
             </form>
         </div>
+        
         </div>
     );
 }
