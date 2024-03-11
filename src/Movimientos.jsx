@@ -17,7 +17,7 @@ function TablaMovimientos () {
     const initialized2 = useRef(false);
     const initialized3 = useRef(false);
     const [paginaActual, setpaginaActual] = useState(0);
-    const [cantidadPorPagina, setcantidadPorPagina] = useState(3);
+    const [cantidadPorPagina, setcantidadPorPagina] = useState(1);
     const [hayOtraPag, sethayOtraPag] = useState(true);
 
     useEffect( () => {
@@ -31,6 +31,18 @@ function TablaMovimientos () {
          }
         
     }, [cajas]);
+
+    useEffect( () => {
+        if (initialized.current){
+            console.log("catidad de cajas = "+Object.values(movs).length)
+            console.log(movs)
+        //     console.log("catidad de movs = "+Object.values(movs).length)
+        //    
+         } else {
+            initialized.current = true;
+         }
+        
+    }, [movs]);
 
     async function getCajas(){
         const token = localStorage.getItem('token');
