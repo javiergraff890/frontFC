@@ -11,6 +11,7 @@
   color: #ffff;
   display:flex;
   justify-content: center;
+  min-height: 200px;
 }
 
 .conteiner h1 {

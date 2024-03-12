@@ -14,17 +14,20 @@ function TablaMovimientos () {
     const inputValorRef = useRef(null);
     const selectRef = useRef(null);
     const initialized = useRef(false);
+    const initializedmov = useRef(false);
     const initialized2 = useRef(false);
     const initialized3 = useRef(false);
     const [paginaActual, setpaginaActual] = useState(0);
-    const [cantidadPorPagina, setcantidadPorPagina] = useState(1);
+    const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
-
+    const [contador, setcontador] = useState(0);
     useEffect( () => {
         if (initialized.current){
             console.log("catidad de cajas = "+Object.values(cajas).length)
             console.log(cajas)
         //     console.log("catidad de movs = "+Object.values(movs).length)
+            console.log("veces que entre = "+contador)
+            setcontador(contador+1)
         //    
          } else {
             initialized.current = true;
@@ -33,13 +36,13 @@ function TablaMovimientos () {
     }, [cajas]);
 
     useEffect( () => {
-        if (initialized.current){
-            console.log("catidad de cajas = "+Object.values(movs).length)
+        if (initializedmov.current){
+            console.log("catidad de movs = "+Object.values(movs).length)
             console.log(movs)
         //     console.log("catidad de movs = "+Object.values(movs).length)
         //    
          } else {
-            initialized.current = true;
+            initializedmov.current = true;
          }
         
     }, [movs]);

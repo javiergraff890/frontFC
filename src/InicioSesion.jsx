@@ -87,13 +87,17 @@ function Signup({toggle, nuevoInicio}){
                 {
                     creacionIncorrecta ? (
                         <div>
-                            No se pudo crear el usuario, intente nuevamente
+                            Usuario existente
                         </div>
-                    ) : <></>
+                    )
+                    :
+                    <div>
+                         »
+                    </div>
                 }
                 <div className="input-div">
                     <box-icon name='lock-alt' color='rgba(255,255,255,0)' ></box-icon>
-                    <button className="btn" type="submit">Iniciar Sesión</button>
+                    <button className="btn" type="submit">Registrarse</button>
                 </div>
                 </div>
                 <div className="registro-div">
@@ -179,7 +183,11 @@ function Login({toggle, nuevoInicio}){
                     <div>
                         Usuario o Password Incorrectos
                     </div>
-                ) : <></>
+                )
+                :
+                    <div>
+                         »
+                    </div>
             }
             <div className="input-div">
                 <box-icon name='lock-alt' color='rgba(255,255,255,0)' ></box-icon>

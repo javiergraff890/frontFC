@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './Cajas.css'
 import {fechaActual} from './funciones.js'
 
@@ -13,7 +13,7 @@ export default function Cajas({userId}){
 function TablaCajas({userId}){
     const [cajas, setCajas] = useState([]);
     const [nombreDuplicado, setnombreDuplicado] = useState(false)
-
+    const initialized = useRef(false);
     
 
     async function getCajas(){
@@ -28,14 +28,18 @@ function TablaCajas({userId}){
         const response = await fetch('https://localhost:7178/caja',requestOptions);
 
          const data = await response.json();
-         console.log('Datos obtenidos:', data);
+         console.log('Datos obtenidos (cajas):', data);
          return data;    
     }
 
     useEffect( () => {
-        getCajas().then( data => {
-            setCajas(data)
-        })      
+        if (initialized.current){
+            getCajas().then( data => {
+                setCajas(data)
+            })
+        } else {
+            initialized.current = true;
+        }
     }, [])
     
     const eventEliminar = (id) => {
