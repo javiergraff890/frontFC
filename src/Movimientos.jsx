@@ -20,14 +20,15 @@ function TablaMovimientos () {
     const [paginaActual, setpaginaActual] = useState(0);
     const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
-    const [contador, setcontador] = useState(0);
+    // const [contador, setcontador] = useState(0);
+   
     useEffect( () => {
         if (initialized.current){
-            console.log("catidad de cajas = "+Object.values(cajas).length)
+            console.log("cajas")
             console.log(cajas)
         //     console.log("catidad de movs = "+Object.values(movs).length)
-            console.log("veces que entre = "+contador)
-            setcontador(contador+1)
+            // console.log("veces que entre = "+contador)
+            // setcontador(contador+1)
         //    
          } else {
             initialized.current = true;
@@ -37,7 +38,7 @@ function TablaMovimientos () {
 
     useEffect( () => {
         if (initializedmov.current){
-            console.log("catidad de movs = "+Object.values(movs).length)
+            console.log("movs")
             console.log(movs)
         //     console.log("catidad de movs = "+Object.values(movs).length)
         //    
@@ -100,19 +101,8 @@ function TablaMovimientos () {
         } else {
             initialized2.current = true;
         }
-
-            // initialized.current = true;
-            // getCajas().then( data => {
-            //     setCajas(data)
-            // })
-            // getMovimientos().then( data => {
-            //     setMovs(data)
-            // })
-            // console.log("a ver cuantas veces");       
-            // console.log(cajas.length)
-        //}
         
-    }, [])
+    }, []);
 
     const eventEliminar = (id) => {
         const token = localStorage.getItem('token')
@@ -175,29 +165,34 @@ function TablaMovimientos () {
     }
 
     const clickSiguiente = () => {
-        if (hayOtraPag)
+        if (hayOtraPag){
+            console.log("sig")
             setpaginaActual(paginaActual+1);
+            getMovimientos().then( data => {
+                setMovs(data)
+           })
+        }
+            
     }
 
     const clickAnterior = () => {
         if (paginaActual > 0){
+            console.log("ant")
             setpaginaActual(paginaActual-1);
+            getMovimientos().then( data => {
+                setMovs(data)
+           })
         }
     }
 
-    useEffect( () => {
-        if (initialized3.current){
-            getMovimientos().then( data => {
-                setMovs(data)
-            })
-            const inicial = (paginaActual) * cantidadPorPagina + 1;
-            console.log("inicial "+inicial+" pag actual = "+paginaActual);
-        } else {
-            initialized3.current=true;
-        }
-        
-        
-    },[paginaActual])
+    // useEffect( () => {
+    //     if (initialized3.current){
+    //         console.log("se modifico paginaActual ="+paginaActual)
+             
+    //     } else {
+    //         initialized3.current=true;
+    //     }
+    // }, [paginaActual])
 
     return (
         <div className="container">
@@ -232,7 +227,9 @@ function TablaMovimientos () {
             <span>pagina actual {paginaActual}</span>
         </div>
         <div>
-            <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
+            {
+                (Object.keys(cajas).length > 0) ? 
+                <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
                 <h2>Nuevo Movimiento</h2>
                 <input ref={inputConceptoRef} type="text" id="concepto" name="concepto" placeholder='Concepto' required></input>
                 <input ref={inputValorRef} type="number" step="0.01" id="valor" name="valor" placeholder='Valor' required></input>
@@ -244,7 +241,10 @@ function TablaMovimientos () {
                     }
                 </select>
                 <button type="submit">Enviar</button>
-            </form>
+                </form>
+                : <div>No hay cajas</div>
+            }
+            
         </div>
         
         </div>
