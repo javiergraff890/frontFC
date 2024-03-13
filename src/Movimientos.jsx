@@ -20,6 +20,9 @@ function TablaMovimientos () {
     const [paginaActual, setpaginaActual] = useState(0);
     const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
+    const mensajeExistenciaCajas = useRef(null);
+    const [botonesActivos, setBotonesActivos] = useState(true);
+    const divcargando = useRef(false);
     // const [contador, setcontador] = useState(0);
    
     useEffect( () => {
@@ -68,6 +71,7 @@ function TablaMovimientos () {
     }
 
     async function getMovimientos(){
+        divcargando.current.textContent = "Cargando ...";
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'GET',
@@ -84,17 +88,23 @@ function TablaMovimientos () {
          
          console.log('Datos obtenidos (movs):', data);
          sethayOtraPag(data.siguiente);
+         divcargando.current.textContent = "";
          return data.movs;    
     }
 
     useEffect( () => {
         if (initialized2.current){
+            if (mensajeExistenciaCajas.current != null)
+                mensajeExistenciaCajas.current.textContent = "Cargando ..."
             Promise.all([
                 getCajas(),
                 getMovimientos()
             ]).then( ([listacajas,listamovimientos]) => {
                 setCajas(listacajas)
                 setMovs(listamovimientos)
+                if (mensajeExistenciaCajas.current != null)
+                    mensajeExistenciaCajas.current.textContent = "No hay cajas"
+                setBotonesActivos(true);
             }).catch( error => {
                 console.error('Error al cargar datos:', error);
             })
@@ -105,22 +115,29 @@ function TablaMovimientos () {
     }, []);
 
     const eventEliminar = (id) => {
-        const token = localStorage.getItem('token')
-        const requestOptions = {
-            method : 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
+        if (botonesActivos){
+            setBotonesActivos(false);
+            const token = localStorage.getItem('token')
+            const requestOptions = {
+                method : 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             }
-        }
 
-        fetch('https://localhost:7178/movimiento/'+id, requestOptions).then(
-            response => {
-                console.log(response);
-                getMovimientos().then( data => {
-                    setMovs(data)
-                })
-            }
-        ).catch( ex => console.log(ex))
+            fetch('https://localhost:7178/movimiento/'+id, requestOptions).then(
+                response => {
+                    console.log(response);
+                    getMovimientos().then( data => {
+                        setMovs(data)
+                        setBotonesActivos(true);
+                    })
+                }
+            ).catch( ex => console.log(ex))
+        } else {
+            console.log("intente eliminar pero estadeshabilitado")
+        }
+        
     }
 
     function formatFecha(fecha){
@@ -166,33 +183,53 @@ function TablaMovimientos () {
 
     const clickSiguiente = () => {
         if (hayOtraPag){
-            console.log("sig")
-            setpaginaActual(paginaActual+1);
-            getMovimientos().then( data => {
-                setMovs(data)
-           })
+            if (botonesActivos){
+                setMovs([])
+                setBotonesActivos(false);
+                console.log("sig")
+                
+                setpaginaActual(paginaActual+1);
+                // getMovimientos().then( data => {
+                //     setMovs(data)
+                //     setBotonesActivos(true);
+                // })
+            }
+            
         }
             
     }
 
     const clickAnterior = () => {
         if (paginaActual > 0){
-            console.log("ant")
-            setpaginaActual(paginaActual-1);
-            getMovimientos().then( data => {
-                setMovs(data)
-           })
+            if (botonesActivos){
+                setMovs([])
+                setBotonesActivos(false);
+                console.log("ant")
+                setpaginaActual(paginaActual-1);
+            }
+        //     getMovimientos().then( data => {
+        //         setMovs(data)
+        //    })
         }
     }
 
-    // useEffect( () => {
-    //     if (initialized3.current){
-    //         console.log("se modifico paginaActual ="+paginaActual)
-             
-    //     } else {
-    //         initialized3.current=true;
-    //     }
-    // }, [paginaActual])
+    useEffect( () => {
+        if (initialized3.current){
+            console.log("se modifico paginaActual ="+paginaActual)
+                
+                getMovimientos().then( data => {
+                    setMovs(data)
+                    setBotonesActivos(true);
+            })
+            
+        } else {
+            initialized3.current=true;
+        }
+    }, [paginaActual])
+
+    const bloquearBotones = () => {
+
+    }
 
     return (
         <div className="container">
@@ -215,23 +252,26 @@ function TablaMovimientos () {
                 <td>{elem.concepto}</td>
                 <td>{elem.valor}</td>
                 <td>{cajas[elem.idCaja].nombre}</td>
-                <td><button onClick={() => eventEliminar(elem.id)}>X</button></td>
+                <td> {botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
             </tr>
             )
         }
         </tbody>
         </table>
-        <div className="divNavegacionPaginas">
-            <div>
-                <button onClick={clickAnterior}><box-icon name='chevron-left-circle' type='solid' color='#ffffff'></box-icon></button>
-                <button onClick={clickSiguiente}><box-icon name='chevron-right-circle' type='solid' color='#ffffff'></box-icon></button>
+       <div ref={divcargando}></div>
+        {
+            (Object.keys(cajas).length > 0) ?
+            <>
+            <div className="divNavegacionPaginas">
+                <div>
+                    <button onClick={clickAnterior}><box-icon name='chevron-left-circle' type='solid' color='#ffffff'></box-icon></button>
+                    <button onClick={clickSiguiente}><box-icon name='chevron-right-circle' type='solid' color='#ffffff'></box-icon></button>
+                </div>
+                
+                <span>pagina actual {paginaActual}</span>
             </div>
-            
-            <span>pagina actual {paginaActual}</span>
-        </div>
         <div className="divNuevoMov">
-            {
-                (Object.keys(cajas).length > 0) ? 
+             
                 <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
                 <h2>Nuevo Movimiento</h2>
                 <input ref={inputConceptoRef} type="text" id="concepto" name="concepto" placeholder='Concepto' required></input>
@@ -245,11 +285,10 @@ function TablaMovimientos () {
                 </select>
                 <button type="submit">Enviar</button>
                 </form>
-                : <div>No hay cajas</div>
-            }
-            
-        </div>
-        
+            </div>
+                </>
+            : <div ref={mensajeExistenciaCajas}>No hay cajas</div>
+        }
         </div>
     );
 }

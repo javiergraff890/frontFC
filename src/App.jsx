@@ -95,7 +95,7 @@ function setMovActivo(){
         </main>
 
         <footer>
-          Hola que tal
+          jjaviergraff@gmail.com
         </footer>
     </>
   )
