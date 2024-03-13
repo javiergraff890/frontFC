@@ -19,3 +19,13 @@ td, th {
 .form-nuevo-movimiento input{
     margin-right: 5px;
 }
+
+.divNuevoMov{
+    padding: 10px;
+}
+
+.divNavegacionPaginas button {
+    margin: 2px;
+    padding: 0 20px;
+}
+

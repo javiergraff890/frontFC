@@ -221,12 +221,15 @@ function TablaMovimientos () {
         }
         </tbody>
         </table>
-        <div>
-            <button onClick={clickAnterior}>anterior</button>
-            <button onClick={clickSiguiente}>siguiente</button>
+        <div className="divNavegacionPaginas">
+            <div>
+                <button onClick={clickAnterior}><box-icon name='chevron-left-circle' type='solid' color='#ffffff'></box-icon></button>
+                <button onClick={clickSiguiente}><box-icon name='chevron-right-circle' type='solid' color='#ffffff'></box-icon></button>
+            </div>
+            
             <span>pagina actual {paginaActual}</span>
         </div>
-        <div>
+        <div className="divNuevoMov">
             {
                 (Object.keys(cajas).length > 0) ? 
                 <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
