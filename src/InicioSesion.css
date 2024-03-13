@@ -17,6 +17,7 @@
 .conteiner h1 {
   font-size: 36;
   text-align: center;
+  padding: 5px;
 }
 
 .input-div {
@@ -41,9 +42,23 @@
 }
 
 .btn {
+  font-size: 15px;
   width: 100%;
-  padding: 4px;
+  padding: 5px;
   margin-left: 5px;
   margin-right: 5px;
+  margin-bottom : 5px;
 }
 
+.divespacio{
+  font-size: 10px;
+  color: rgb(50, 38, 50);
+}
+
+.divError{
+  font-size: 10px;
+}
+
+.registro-div{
+  padding: 5px;
+}

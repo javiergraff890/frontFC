@@ -86,12 +86,12 @@ function Signup({toggle, nuevoInicio}){
                 </div>
                 {
                     creacionIncorrecta ? (
-                        <div>
+                        <div className="divError">
                             Usuario existente
                         </div>
                     )
                     :
-                    <div>
+                    <div className="divespacio">
                          »
                     </div>
                 }
@@ -180,12 +180,12 @@ function Login({toggle, nuevoInicio}){
             </div>
             {
                 !datosCorrectos ? (
-                    <div>
+                    <div className="divError">
                         Usuario o Password Incorrectos
                     </div>
                 )
                 :
-                    <div>
+                    <div className="divespacio">
                          »
                     </div>
             }
