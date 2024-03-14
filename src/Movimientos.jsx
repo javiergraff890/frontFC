@@ -1,6 +1,8 @@
 import './Movimientos.css'
 import { useState, useEffect, useRef } from 'react'
 import {fechaActual} from './funciones.js'
+import {ENDPOINT_DELETE_MOVS, ENDPOINT_GET_CAJAS, ENDPOINT_GET_MOVS, ENDPOINT_POST_MOVS} from './endpoints.js'
+
 export default function Movimientos(){
     return (
         <TablaMovimientos />
@@ -61,7 +63,7 @@ function TablaMovimientos () {
             }
         };
 
-        const response = await fetch('https://localhost:7178/caja',requestOptions);
+        const response = await fetch(ENDPOINT_GET_CAJAS ,requestOptions);
 
          const data = await response.json();
          console.log('Datos obtenidos (cajas):', data);
@@ -82,7 +84,7 @@ function TablaMovimientos () {
             }
         };
         const inicial = (paginaActual) * cantidadPorPagina + 1;
-        const endpoint = 'https://localhost:7178/movimiento/'+inicial+'/'+cantidadPorPagina;
+        const endpoint = ENDPOINT_GET_MOVS+inicial+'/'+cantidadPorPagina;
         console.log("voy a enviar "+endpoint)
         const response = await fetch(endpoint,requestOptions);
 
@@ -91,22 +93,25 @@ function TablaMovimientos () {
          console.log('Datos obtenidos (movs):', data);
          sethayOtraPag(data.siguiente);
          if (divcargando.current != null)
+            if (data.movs.length == 0)
+                divcargando.current.textContent = "No hay cajas";
+            else
             divcargando.current.textContent = "";
          return data.movs;    
     }
 
     useEffect( () => {
         if (initialized2.current){
-            if (mensajeExistenciaCajas.current != null)
-                mensajeExistenciaCajas.current.textContent = "Cargando ..."
+            // if (mensajeExistenciaCajas.current != null)
+            //     mensajeExistenciaCajas.current.textContent = "Cargando ..."
             Promise.all([
                 getCajas(),
                 getMovimientos()
             ]).then( ([listacajas,listamovimientos]) => {
                 setCajas(listacajas)
                 setMovs(listamovimientos)
-                if (mensajeExistenciaCajas.current != null)
-                    mensajeExistenciaCajas.current.textContent = "No hay cajas"
+                // if (mensajeExistenciaCajas.current != null)
+                //     mensajeExistenciaCajas.current.textContent = "No hay cajas"
                 setBotonesActivos(true);
             }).catch( error => {
                 console.error('Error al cargar datos:', error);
@@ -128,7 +133,7 @@ function TablaMovimientos () {
                 }
             }
 
-            fetch('https://localhost:7178/movimiento/'+id, requestOptions).then(
+            fetch(ENDPOINT_DELETE_MOVS+id, requestOptions).then(
                 response => {
                     console.log(response);
                     getMovimientos().then( data => {
@@ -175,7 +180,7 @@ function TablaMovimientos () {
             
         };
 
-        fetch('https://localhost:7178/movimiento',requestOptions).then(
+        fetch(ENDPOINT_POST_MOVS,requestOptions).then(
             response => {
                 console.log(response);
                 getMovimientos().then( data => {
@@ -234,9 +239,7 @@ function TablaMovimientos () {
         }
     }, [paginaActual])
 
-    const bloquearBotones = () => {
 
-    }
 
     return (
         <div className="container">
@@ -275,7 +278,7 @@ function TablaMovimientos () {
                     <button onClick={clickSiguiente}><box-icon name='chevron-right-circle' type='solid' color='#ffffff'></box-icon></button>
                 </div>
                 
-                <span>pagina actual {paginaActual}</span>
+                <span>pagina actual {paginaActual+1}</span>
             </div>
         <div className="divNuevoMov">
              
@@ -294,7 +297,8 @@ function TablaMovimientos () {
                 </form>
             </div>
                 </>
-            : <div ref={mensajeExistenciaCajas}>No hay cajas</div>
+            : <></>
+            // : <div ref={mensajeExistenciaCajas}>No hay cajas</div>
         }
         </div>
     );
