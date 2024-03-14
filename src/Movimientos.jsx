@@ -155,14 +155,21 @@ function TablaMovimientos () {
         return dia + " ("+ hora+")";
     }
 
-    
+    const checkConcepto = (concepto) => {
+        return (concepto.length <=200);
+    }
 
     const handleSubmit = (event) =>{
         event.preventDefault()
-        const concepto = inputConceptoRef.current.value;
-        const valor = inputValorRef.current.value;
+        const concepto = inputConceptoRef.current.value.trim();
+        const valor = inputValorRef.current.value.trim();
         const cajaSeleccionada = selectRef.current.value;
         console.log("voy a insertar = "+concepto+" "+valor+" "+cajaSeleccionada)
+
+        console.log("tipo de valor = "+typeof(valor))
+        if (!checkConcepto(concepto)){
+            console.log("gola")
+        }
 
         const token = localStorage.getItem('token');
         const requestOptions = {
@@ -181,12 +188,15 @@ function TablaMovimientos () {
         };
 
         fetch(endpoints.ENDPOINT_POST_MOVS,requestOptions).then(
-            response => {
-                console.log(response);
-                getMovimientos().then( data => {
-                    setMovs(data)
-                })
-            }).catch(error => console.log(error));
+            response => response.text()
+            ).then(
+                texto => {
+                    console.log(texto);
+                    getMovimientos().then( data => {
+                        setMovs(data)
+                    })
+                }
+            ).catch(error => console.log("errror "+error));
     }
 
     const clickSiguiente = () => {
