@@ -1,7 +1,7 @@
 import './Movimientos.css'
 import { useState, useEffect, useRef } from 'react'
 import {fechaActual} from './funciones.js'
-import {ENDPOINT_DELETE_MOVS, ENDPOINT_GET_CAJAS, ENDPOINT_GET_MOVS, ENDPOINT_POST_MOVS} from './endpoints.js'
+import  endpoints from './endpoints.js'
 
 export default function Movimientos(){
     return (
@@ -63,7 +63,7 @@ function TablaMovimientos () {
             }
         };
 
-        const response = await fetch(ENDPOINT_GET_CAJAS ,requestOptions);
+        const response = await fetch(endpoints.ENDPOINT_GET_CAJAS ,requestOptions);
 
          const data = await response.json();
          console.log('Datos obtenidos (cajas):', data);
@@ -84,7 +84,7 @@ function TablaMovimientos () {
             }
         };
         const inicial = (paginaActual) * cantidadPorPagina + 1;
-        const endpoint = ENDPOINT_GET_MOVS+inicial+'/'+cantidadPorPagina;
+        const endpoint = endpoints.ENDPOINT_GET_MOVS+inicial+'/'+cantidadPorPagina;
         console.log("voy a enviar "+endpoint)
         const response = await fetch(endpoint,requestOptions);
 
@@ -133,7 +133,7 @@ function TablaMovimientos () {
                 }
             }
 
-            fetch(ENDPOINT_DELETE_MOVS+id, requestOptions).then(
+            fetch(endpoints.ENDPOINT_DELETE_MOVS+id, requestOptions).then(
                 response => {
                     console.log(response);
                     getMovimientos().then( data => {
@@ -180,7 +180,7 @@ function TablaMovimientos () {
             
         };
 
-        fetch(ENDPOINT_POST_MOVS,requestOptions).then(
+        fetch(endpoints.ENDPOINT_POST_MOVS,requestOptions).then(
             response => {
                 console.log(response);
                 getMovimientos().then( data => {
