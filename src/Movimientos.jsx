@@ -23,6 +23,7 @@ function TablaMovimientos () {
     const mensajeExistenciaCajas = useRef(null);
     const [botonesActivos, setBotonesActivos] = useState(true);
     const divcargando = useRef(false);
+    const initializedPaginaActual = useRef(false);
     // const [contador, setcontador] = useState(0);
    
     useEffect( () => {
@@ -71,7 +72,8 @@ function TablaMovimientos () {
     }
 
     async function getMovimientos(){
-        divcargando.current.textContent = "Cargando ...";
+        if (divcargando.current != null)
+            divcargando.current.textContent = "Cargando ...";
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'GET',
@@ -88,7 +90,8 @@ function TablaMovimientos () {
          
          console.log('Datos obtenidos (movs):', data);
          sethayOtraPag(data.siguiente);
-         divcargando.current.textContent = "";
+         if (divcargando.current != null)
+            divcargando.current.textContent = "";
          return data.movs;    
     }
 
@@ -184,7 +187,7 @@ function TablaMovimientos () {
     const clickSiguiente = () => {
         if (hayOtraPag){
             if (botonesActivos){
-                setMovs([])
+                //setMovs([])
                 setBotonesActivos(false);
                 console.log("sig")
                 
@@ -202,7 +205,7 @@ function TablaMovimientos () {
     const clickAnterior = () => {
         if (paginaActual > 0){
             if (botonesActivos){
-                setMovs([])
+                //setMovs([])
                 setBotonesActivos(false);
                 console.log("ant")
                 setpaginaActual(paginaActual-1);
@@ -215,12 +218,16 @@ function TablaMovimientos () {
 
     useEffect( () => {
         if (initialized3.current){
-            console.log("se modifico paginaActual ="+paginaActual)
-                
-                getMovimientos().then( data => {
-                    setMovs(data)
-                    setBotonesActivos(true);
-            })
+            if (initializedPaginaActual.current){
+                console.log("se modifico paginaActual ="+paginaActual)
+                    getMovimientos().then( data => {
+                        setMovs(data)
+                        setBotonesActivos(true);
+                })
+            } else{
+                initializedPaginaActual.current = true;
+            }
+            
             
         } else {
             initialized3.current=true;
