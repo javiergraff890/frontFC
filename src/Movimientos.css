@@ -29,3 +29,31 @@ td, th {
     padding: 0 20px;
 }
 
+
+.columnaFecha{
+    width: 150px;
+}
+
+.font-columnaFecha{
+    font-size: 12px;
+}
+
+.columnaConcepto{
+    width: 200px;
+}
+
+.columnaValor{
+    width: 120px;
+}
+
+.columnaEliminar{
+    width: 100px;
+}
+
+.columnaCaja{
+    width: 130;
+}
+
+.font-columnaCaja{
+    font-size: 13px;
+}

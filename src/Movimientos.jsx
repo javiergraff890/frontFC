@@ -22,7 +22,7 @@ function TablaMovimientos () {
     const [paginaActual, setpaginaActual] = useState(0);
     const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
-    const mensajeExistenciaCajas = useRef(null);
+    // const mensajeExistenciaCajas = useRef(null);
     const [botonesActivos, setBotonesActivos] = useState(true);
     const divcargando = useRef(false);
     const initializedPaginaActual = useRef(false);
@@ -247,22 +247,22 @@ function TablaMovimientos () {
             {/* <caption>Cajas</caption> */}
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Concepto</th>
-                    <th>Valor</th>
-                    <th>Caja</th>
-                    <th>Eliminar</th>
+                    <th className="columnaFecha">Fecha</th>
+                    <th className="columnaConcepto">Concepto</th>
+                    <th className="columnaValor">Valor</th>
+                    <th className="columnaCaja">Caja</th>
+                    <th className="columnaEliminar">Eliminar</th>
                 </tr>
             </thead>
             <tbody>
         {
             movs.map( (elem) =>
             <tr key={elem.id}>
-                <td>{formatFecha(elem.fecha)}</td>
-                <td>{elem.concepto}</td>
-                <td>{elem.valor}</td>
-                <td>{cajas[elem.idCaja].nombre}</td>
-                <td> {botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
+                <td className="columnaFecha font-columnaFecha">{formatFecha(elem.fecha)}</td>
+                <td className="columnaConcepto">{elem.concepto}</td>
+                <td className="columnaValor">$ {elem.valor}</td>
+                <td className="columnaCaja font-columnaCaja">{cajas[elem.idCaja].nombre}</td>
+                <td className="columnaEliminar"> {botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
             </tr>
             )
         }
