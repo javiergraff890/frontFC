@@ -66,3 +66,40 @@ td, th {
 .errorInputOculto{
     display: none;
 }
+
+.divNuevoMov button{
+    padding: 5px;
+    margin-left: 5px;
+}
+
+.divNuevoMov input {
+    padding: 5px;
+}
+
+.divNuevoMov select {
+    padding: 5px;
+    min-width: 100px;
+    text-align: center;
+}
+
+.ingreso {
+    background-color: green;
+    width: 70px;
+}
+
+.egreso {
+    background-color: red;
+    width: 70px;
+}
+
+.divSignomas{
+    color: rgb(178, 231, 178);
+    display: inline;
+    width: 20px;
+}
+.divSignomenos{
+    color: rgb(245, 167, 167);
+    display: inline;
+    width: 20px;
+}
+

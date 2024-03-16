@@ -27,8 +27,23 @@ function TablaMovimientos () {
     const divcargando = useRef(false);
     const initializedPaginaActual = useRef(false);
     const divErrorRef = useRef(false);
+    const botonIngresoEgreso = useRef(false);
+    
+    //true ingreso, false egreso
+    const [ingreso, setIngreso] = useState(true);
     // const [contador, setcontador] = useState(0);
    
+    // useEffect( () => {
+    //     if (ingreso){
+    //         botonIngresoEgreso.current.classList.toggle("ingreso", true);
+    //         botonIngresoEgreso.current.classList.toggle("egreso", false);
+    //     } else {
+    //         botonIngresoEgreso.current.classList.toggle("ingreso", false);
+    //         botonIngresoEgreso.current.classList.toggle("egreso", true);
+    //     }
+
+    // }, [ingreso])
+
     useEffect( () => {
         if (initialized.current){
             console.log("cajas")
@@ -277,6 +292,10 @@ function TablaMovimientos () {
         }
     }, [paginaActual])
 
+    const toggleIngresoEgreso = () => {
+        console.log("gola")
+        setIngreso(!ingreso)
+    }
 
 
     return (
@@ -322,7 +341,11 @@ function TablaMovimientos () {
              
                 <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
                 <h2>Nuevo Movimiento</h2>
+                
                 <input ref={inputConceptoRef} type="text"  maxLength="50" id="concepto" name="concepto" placeholder='Concepto' required></input>
+                <div className={ ingreso ? "divSignomas" : "divSignomenos"}>
+                {ingreso ? "+$ " : "- $ "}
+                </div >
                 <input ref={inputValorRef} type="number" maxLength="4" step="0.01" min="-99999999.99" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
                 <select ref={selectRef}>
                     {
@@ -331,6 +354,7 @@ function TablaMovimientos () {
                          )
                     }
                 </select>
+                <button type="button" ref={botonIngresoEgreso} onClick={toggleIngresoEgreso} className={ingreso ? "ingreso" : "egreso"} >{ingreso ? "Ingreso" : "Egreso"}</button>
                 <button type="submit">Enviar</button>
                 <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
                 </form>
