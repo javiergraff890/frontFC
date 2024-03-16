@@ -163,8 +163,10 @@ function TablaMovimientos () {
     const handleSubmit = (event) =>{
         event.preventDefault()
 
-        if (divErrorRef != null)
-            divErrorRef.current.classList.toggle("errorInputOculto")
+        if (divErrorRef != null){
+            divErrorRef.current.classList.toggle("errorInputVisible", false)
+            divErrorRef.current.classList.toggle("errorInputOculto", true)
+        }
 
         const concepto = inputConceptoRef.current.value.trim();
         const valor = inputValorRef.current.value.trim();
@@ -209,12 +211,14 @@ function TablaMovimientos () {
                 texto => {
                     if (texto == 'saldo_maximo_excedido'){
                         console.log(texto)
+                        divErrorRef.current.classList.toggle("errorInputVisible", true)
+                        divErrorRef.current.classList.toggle("errorInputOculto", false)
                         divErrorRef.current.textContent ="Este movimiento excede el saldo maximo ($ 99.999.999,99)";
-                        divErrorRef.current.classList.toggle("errorInputVisible")
                     } else if (texto == 'saldo_minimo_excedido'){
                         console.log(texto)
+                        divErrorRef.current.classList.toggle("errorInputVisible", true)
+                        divErrorRef.current.classList.toggle("errorInputOculto", false)
                         divErrorRef.current.textContent ="Este movimiento excede el saldo minimo ($ -99.999.999,99)";
-                        divErrorRef.current.classList.toggle("errorInputVisible")
                     }
                     else if (texto != "")
                         throw new Error(texto);
@@ -327,8 +331,8 @@ function TablaMovimientos () {
                          )
                     }
                 </select>
-                <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
                 <button type="submit">Enviar</button>
+                <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
                 </form>
             </div>
                 </>
