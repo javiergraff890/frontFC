@@ -57,3 +57,12 @@ td, th {
 .font-columnaCaja{
     font-size: 13px;
 }
+
+.errorInputVisible{
+    color: red; 
+    display: block;
+}
+
+.errorInputOculto{
+    display: none;
+}

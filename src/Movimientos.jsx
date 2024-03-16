@@ -26,6 +26,7 @@ function TablaMovimientos () {
     const [botonesActivos, setBotonesActivos] = useState(true);
     const divcargando = useRef(false);
     const initializedPaginaActual = useRef(false);
+    const divErrorRef = useRef(false);
     // const [contador, setcontador] = useState(0);
    
     useEffect( () => {
@@ -161,6 +162,10 @@ function TablaMovimientos () {
 
     const handleSubmit = (event) =>{
         event.preventDefault()
+
+        if (divErrorRef != null)
+            divErrorRef.current.classList.toggle("errorInputOculto")
+
         const concepto = inputConceptoRef.current.value.trim();
         const valor = inputValorRef.current.value.trim();
         const cajaSeleccionada = selectRef.current.value;
@@ -180,7 +185,7 @@ function TablaMovimientos () {
             },
                 body: JSON.stringify({
                     "concepto" : concepto,
-                     "valor" :valor,
+                     "valor" : valor,
                      "idCaja": cajaSeleccionada,
                      "fecha" : fechaActual()
                 })
@@ -188,13 +193,32 @@ function TablaMovimientos () {
         };
 
         fetch(endpoints.ENDPOINT_POST_MOVS,requestOptions).then(
-            response => response.text()
+            response => {
+                    console.log(response)
+                    if (response.ok){
+                        getMovimientos().then( data => {
+                            setMovs(data)
+                        })
+                        return "";       
+                    } else {
+                        return response.text()
+                    }
+                }
+                
             ).then(
                 texto => {
-                    console.log(texto);
-                    getMovimientos().then( data => {
-                        setMovs(data)
-                    })
+                    if (texto == 'saldo_maximo_excedido'){
+                        console.log(texto)
+                        divErrorRef.current.textContent ="Este movimiento excede el saldo maximo ($ 99.999.999,99)";
+                        divErrorRef.current.classList.toggle("errorInputVisible")
+                    } else if (texto == 'saldo_minimo_excedido'){
+                        console.log(texto)
+                        divErrorRef.current.textContent ="Este movimiento excede el saldo minimo ($ -99.999.999,99)";
+                        divErrorRef.current.classList.toggle("errorInputVisible")
+                    }
+                    else if (texto != "")
+                        throw new Error(texto);
+                    //esto no deberia ocurrir nunca ya que hago chequeos en el frontend
                 }
             ).catch(error => console.log("errror "+error));
     }
@@ -294,8 +318,8 @@ function TablaMovimientos () {
              
                 <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
                 <h2>Nuevo Movimiento</h2>
-                <input ref={inputConceptoRef} type="text" id="concepto" name="concepto" placeholder='Concepto' required></input>
-                <input ref={inputValorRef} type="number" step="0.01" id="valor" name="valor" placeholder='Valor' required></input>
+                <input ref={inputConceptoRef} type="text"  maxLength="50" id="concepto" name="concepto" placeholder='Concepto' required></input>
+                <input ref={inputValorRef} type="number" maxLength="4" step="0.01" min="-99999999.99" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
                 <select ref={selectRef}>
                     {
                         Object.values(cajas).map( (elem) => 
@@ -303,6 +327,7 @@ function TablaMovimientos () {
                          )
                     }
                 </select>
+                <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
                 <button type="submit">Enviar</button>
                 </form>
             </div>
