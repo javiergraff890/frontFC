@@ -184,7 +184,10 @@ function TablaMovimientos () {
         }
 
         const concepto = inputConceptoRef.current.value.trim();
-        const valor = inputValorRef.current.value.trim();
+        var valor = inputValorRef.current.value.trim();
+        if (!ingreso){
+            valor = '-'+ inputValorRef.current.value.trim();
+        }
         const cajaSeleccionada = selectRef.current.value;
         console.log("voy a insertar = "+concepto+" "+valor+" "+cajaSeleccionada)
 
@@ -346,7 +349,7 @@ function TablaMovimientos () {
                 <div className={ ingreso ? "divSignomas" : "divSignomenos"}>
                 {ingreso ? "+$ " : "- $ "}
                 </div >
-                <input ref={inputValorRef} type="number" maxLength="4" step="0.01" min="-99999999.99" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
+                <input ref={inputValorRef} type="number" maxLength="4" step="0.01" min="0.00" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
                 <select ref={selectRef}>
                     {
                         Object.values(cajas).map( (elem) => 
