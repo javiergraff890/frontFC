@@ -334,8 +334,18 @@ function TablaMovimientos () {
             <>
             <div className="divNavegacionPaginas">
                 <div>
-                    <button onClick={clickAnterior}><box-icon name='chevron-left-circle' type='solid' color='#ffffff'></box-icon></button>
-                    <button onClick={clickSiguiente}><box-icon name='chevron-right-circle' type='solid' color='#ffffff'></box-icon></button>
+                    <button onClick={clickAnterior}>
+                        {
+                            paginaActual > 0 ? <box-icon name='chevron-left-circle' type='solid' color='#ffffff'></box-icon>
+                            : <box-icon type='solid' color='#ffffff'></box-icon>
+                        }
+                    </button>
+                    <button onClick={clickSiguiente}>
+                        {
+                            hayOtraPag ? <box-icon name='chevron-right-circle' type='solid' color='#ffffff'></box-icon>
+                            : <box-icon type='solid' color='#ffffff'></box-icon>
+                        }
+                    </button>
                 </div>
                 
                 <span>pagina actual {paginaActual+1}</span>
