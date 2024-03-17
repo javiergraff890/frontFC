@@ -2,14 +2,15 @@ import './Movimientos.css'
 import { useState, useEffect, useRef } from 'react'
 import {fechaActual} from './funciones.js'
 import  endpoints from './endpoints.js'
+import swal from 'sweetalert'
 
-export default function Movimientos(){
+export default function Movimientos({userId, cerrarSesion}){
     return (
-        <TablaMovimientos />
+        <TablaMovimientos cerrarSesion={cerrarSesion} />
     );
 }
 
-function TablaMovimientos () {
+function TablaMovimientos ({cerrarSesion}) {
     const [movs, setMovs] = useState([]);
     const [cajas, setCajas] = useState({});
     const inputConceptoRef = useRef(null);
@@ -23,7 +24,7 @@ function TablaMovimientos () {
     const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
     // const mensajeExistenciaCajas = useRef(null);
-    const [botonesActivos, setBotonesActivos] = useState(true);
+    const [botonesActivos, setBotonesActivos] = useState(false);
     const divcargando = useRef(false);
     const initializedPaginaActual = useRef(false);
     const divErrorRef = useRef(false);
@@ -80,6 +81,12 @@ function TablaMovimientos () {
         };
 
         const response = await fetch(endpoints.ENDPOINT_GET_CAJAS ,requestOptions);
+        
+        if (response.status == 401){
+            swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+            cerrarSesion()
+            return [];
+        }
 
          const data = await response.json();
          console.log('Datos obtenidos (cajas):', data);
@@ -104,6 +111,12 @@ function TablaMovimientos () {
         console.log("voy a enviar "+endpoint)
         const response = await fetch(endpoint,requestOptions);
 
+        if (response.status == 401){
+            swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+            cerrarSesion()
+            return [];
+        }
+
          const data = await response.json();
          
          console.log('Datos obtenidos (movs):', data);
@@ -111,8 +124,10 @@ function TablaMovimientos () {
          if (divcargando.current != null)
             if (data.movs.length == 0)
                 divcargando.current.textContent = "No hay cajas";
-            else
-            divcargando.current.textContent = "";
+            else{
+                divcargando.current.textContent = "";
+            }
+            
          return data.movs;    
     }
 
@@ -152,10 +167,14 @@ function TablaMovimientos () {
             fetch(endpoints.ENDPOINT_DELETE_MOVS+id, requestOptions).then(
                 response => {
                     console.log(response);
-                    getMovimientos().then( data => {
-                        setMovs(data)
-                        setBotonesActivos(true);
-                    })
+                    if (response.status == 401){
+                        swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+                        cerrarSesion()
+                    } else
+                        getMovimientos().then( data => {
+                            setMovs(data)
+                            setBotonesActivos(true);
+                        })
                 }
             ).catch( ex => console.log(ex))
         } else {
@@ -220,6 +239,10 @@ function TablaMovimientos () {
                             setMovs(data)
                         })
                         return "";       
+                    } else if (response.status == 401){
+                        swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+                        cerrarSesion()
+                        return "";
                     } else {
                         return response.text()
                     }
@@ -280,7 +303,7 @@ function TablaMovimientos () {
     useEffect( () => {
         if (initialized3.current){
             if (initializedPaginaActual.current){
-                console.log("se modifico paginaActual ="+paginaActual)
+                console.log("se modifico páginaActual ="+paginaActual)
                     getMovimientos().then( data => {
                         setMovs(data)
                         setBotonesActivos(true);
@@ -328,7 +351,7 @@ function TablaMovimientos () {
         }
         </tbody>
         </table>
-       <div ref={divcargando}></div>
+       <div className="divCargando" ref={divcargando}></div>
         {
             (Object.keys(cajas).length > 0) ?
             <>
@@ -347,8 +370,12 @@ function TablaMovimientos () {
                         }
                     </button>
                 </div>
+                {
+                    botonesActivos ? 
+                    <span>Página {paginaActual+1}</span>
+                    : <span>Cargando página</span>
+                }
                 
-                <span>pagina actual {paginaActual+1}</span>
             </div>
         <div className="divNuevoMov">
              

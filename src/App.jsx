@@ -91,7 +91,7 @@ function setMovActivo(){
           { componenteActivo === 0 && <InicioSesion nuevoInicio={nuevoInicio}/>}
           { componenteActivo === 1 && <h1>Bienvenido {userName}</h1>}
           { componenteActivo === 2 && <Cajas userId={userId} />}
-          { componenteActivo === 3 && <Movimientos userId={userId} />}
+          { componenteActivo === 3 && <Movimientos userId={userId} cerrarSesion={cerrarSesion}/>}
         </main>
 
         <footer>

@@ -1,7 +1,7 @@
 .tabla-movimientos{
     width: 700px;
     margin-top:50px;
-    margin-bottom:20px;
+    margin-bottom:5px;
     caption-side: bottom;
     margin-left: auto;
     margin-right: auto;
@@ -17,7 +17,7 @@ td, th {
     border: 2px solid black;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 3px;
+    padding-top: 5px;
     padding-bottom: 5px;
 }
 
@@ -31,6 +31,7 @@ td, th {
 }
 
 .divNavegacionPaginas button {
+    margin-top: 5px;
     margin: 2px;
     padding: 0 20px;
 }
@@ -48,6 +49,9 @@ td, th {
     min-width:200px;
     max-width: 200px;
     overflow-x :auto;
+    /* overflow-x: hidden; */
+
+
 }
 
 .columnaValor{
@@ -111,5 +115,11 @@ td, th {
     color: rgb(245, 167, 167);
     display: inline;
     width: 20px;
+}
+
+
+.divCargando{
+    font-size:12px;
+    height: 20px;
 }
 
