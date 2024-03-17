@@ -91,7 +91,7 @@ function TablaMovimientos () {
 
     async function getMovimientos(){
         if (divcargando.current != null)
-            divcargando.current.textContent = "Cargando ...";
+            divcargando.current.textContent = "Cargando movimientos ...";
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'GET',
