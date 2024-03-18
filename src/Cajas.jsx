@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
 import './Cajas.css'
 import {fechaActual} from './funciones.js'
+import swal from 'sweetalert'
 
-export default function Cajas({userId}){
+export default function Cajas({userId, cerrarSesion}){
     return (
         <div>
-            <TablaCajas userId={userId} />
+            <TablaCajas userId={userId} cerrarSesion={cerrarSesion} />
         </div>
     );
 }
 
-function TablaCajas({userId}){
+function TablaCajas({userId, cerrarSesion}){
     const [cajas, setCajas] = useState([]);
     const [nombreDuplicado, setnombreDuplicado] = useState(false)
     const initialized = useRef(false);
@@ -26,6 +27,12 @@ function TablaCajas({userId}){
         };
 
         const response = await fetch('https://localhost:7178/caja',requestOptions);
+
+        if (response.status == 401){
+            swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+            cerrarSesion()
+            return [];
+        }
 
          const data = await response.json();
          console.log('Datos obtenidos (cajas):', data);
@@ -44,9 +51,12 @@ function TablaCajas({userId}){
     
     const eventEliminar = (id) => {
         console.log("toque eliminar al id= "+id)
-        
+        const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
             // headers: { 'Content-Type': 'application/json' },
             // body: JSON.stringify({})
         };
@@ -54,21 +64,40 @@ function TablaCajas({userId}){
         fetch('https://localhost:7178/caja/'+id, requestOptions).then(
             response => {
                 console.log(response)
-                getCajas().then( data => {
-                    setCajas(data)
-                })
+                if (response.status == 401){
+                    swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+                    cerrarSesion()
+                } else
+                    getCajas().then( data => {
+                        setCajas(data)
+                    })
             }
         )
 
+    }
+    //sacada de GPT!
+    function obtenerFechaExpiracion(jwt) {
+        const payloadBase64 = jwt.split('.')[1]; // Obtiene el payload del JWT (la segunda parte)
+        const payload = JSON.parse(atob(payloadBase64)); // Decodifica el payload Base64 y lo convierte a objeto JSON
+        
+        if (payload.exp) {
+            return new Date(payload.exp * 1000).toString().split('(')[0]; // Multiplica por 1000 para convertir de segundos a milisegundos
+        } else {
+            return null; // El token no tiene una fecha de expiración
+        }
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const nombre = document.getElementById("nombre").value;
         const saldo = document.getElementById("saldo").value;
+        const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({
                 "caja" : {
                     "nombre" : nombre,
@@ -85,6 +114,9 @@ function TablaCajas({userId}){
             if (response.status == 204){
                 console.log("se ingreso nombre repetido");
                 setnombreDuplicado(true);
+            } else if (response.status == 401){
+                swal('Sesion expirada', 'Vuelva a iniciar sesion - nueva caja\n'+obtenerFechaExpiracion(token) )
+                cerrarSesion()
             } else {
                 getCajas().then( data => {
                     setCajas(data)
