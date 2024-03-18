@@ -1,7 +1,7 @@
 import "./InicioSesion.css";
 import {useState, useRef} from 'react';
 import 'boxicons'
-import ENDPOINT_SUBMIT_SIGNUP from "./endpoints.js"
+import endpoints from "./endpoints.js"
 
 
 export default function InicioSesion({nuevoInicio}) {
@@ -52,7 +52,7 @@ function Signup({toggle, nuevoInicio}){
         }
 
         
-        const response = await fetch(ENDPOINT_SUBMIT_SIGNUP, requestOptions)
+        const response = await fetch(endpoints.ENDPOINT_SUBMIT_SIGNUP, requestOptions)
 
         if (response.ok){
             console.log("usuario creado con exito");
@@ -115,7 +115,7 @@ function Login({toggle, nuevoInicio}){
     
     async function login(){
         const pass = document.getElementById('password').value;
-        const response = await fetch("https://localhost:7178/user/Login", {
+        const response = await fetch(endpoints.ENDPOINT_POST_LOGIN, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
