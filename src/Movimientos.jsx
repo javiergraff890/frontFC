@@ -211,79 +211,83 @@ function TablaMovimientos ({cerrarSesion}) {
     const handleSubmit = (event) =>{
         event.preventDefault()
 
-        if (divErrorRef != null){
-            divErrorRef.current.classList.toggle("errorInputVisible", false)
-            divErrorRef.current.classList.toggle("errorInputOculto", true)
-        }
+        if (botonesActivos){
+            setBotonesActivos(false);
+            if (divErrorRef != null){
+                divErrorRef.current.classList.toggle("errorInputVisible", false)
+                divErrorRef.current.classList.toggle("errorInputOculto", true)
+            }
 
-        const concepto = inputConceptoRef.current.value.trim();
-        var valor = inputValorRef.current.value.trim();
-        if (!ingreso){
-            valor = '-'+ inputValorRef.current.value.trim();
-        }
-        const cajaSeleccionada = selectRef.current.value;
-        console.log("voy a insertar = "+concepto+" "+valor+" "+cajaSeleccionada)
+            const concepto = inputConceptoRef.current.value.trim();
+            var valor = inputValorRef.current.value.trim();
+            if (!ingreso){
+                valor = '-'+ inputValorRef.current.value.trim();
+            }
+            const cajaSeleccionada = selectRef.current.value;
+            console.log("voy a insertar = "+concepto+" "+valor+" "+cajaSeleccionada)
 
-        console.log("tipo de valor = "+typeof(valor))
-        if (!checkConcepto(concepto)){
-            console.log("gola")
-        }
+            console.log("tipo de valor = "+typeof(valor))
+            if (!checkConcepto(concepto)){
+                console.log("gola")
+            }
 
-        const token = localStorage.getItem('token');
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-                body: JSON.stringify({
-                    "concepto" : concepto,
-                     "valor" : valor,
-                     "idCaja": cajaSeleccionada,
-                     "fecha" : fechaActual()
-                })
-            
-        };
-
-        inputValorRef.current.value = "";
-        inputConceptoRef.current.value = "";
-
-        fetch(endpoints.ENDPOINT_POST_MOVS,requestOptions).then(
-            response => {
-                    console.log(response)
-                    if (response.ok){
-                        getMovimientos().then( data => {
-                            setMovs(data)
-                        })
-                        return "";       
-                    } else if (response.status == 401){
-                        swal('Sesion expirada', 'Vuelva a iniciar sesion', )
-                        cerrarSesion()
-                        return "";
-                    } else {
-                        return response.text()
-                    }
-                }
+            const token = localStorage.getItem('token');
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                    body: JSON.stringify({
+                        "concepto" : concepto,
+                        "valor" : valor,
+                        "idCaja": cajaSeleccionada,
+                        "fecha" : fechaActual()
+                    })
                 
-            ).then(
-                texto => {
-                    if (texto == 'saldo_maximo_excedido'){
-                        console.log(texto)
-                        divErrorRef.current.classList.toggle("errorInputVisible", true)
-                        divErrorRef.current.classList.toggle("errorInputOculto", false)
-                        divErrorRef.current.textContent ="Este movimiento excede el saldo maximo ($ 99.999.999,99)";
-                    } else if (texto == 'saldo_minimo_excedido'){
-                        console.log(texto)
-                        divErrorRef.current.classList.toggle("errorInputVisible", true)
-                        divErrorRef.current.classList.toggle("errorInputOculto", false)
-                        divErrorRef.current.textContent ="Este movimiento excede el saldo minimo ($ -99.999.999,99)";
+            };
+
+            inputValorRef.current.value = "";
+            inputConceptoRef.current.value = "";
+
+            fetch(endpoints.ENDPOINT_POST_MOVS,requestOptions).then(
+                response => {
+                        console.log(response)
+                        if (response.ok){
+                            getMovimientos().then( data => {
+                                setMovs(data)
+                                setBotonesActivos(true);
+                            })
+                            return "";       
+                        } else if (response.status == 401){
+                            swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+                            cerrarSesion()
+                            return "";
+                        } else {
+                            setBotonesActivos(true);
+                            return response.text()
+                        }
                     }
-                    else if (texto != "")
-                        throw new Error(texto);
-                    //esto no deberia ocurrir nunca ya que hago chequeos en el frontend
-                }
-            ).catch(error => console.log("errror "+error));
-            
+                    
+                ).then(
+                    texto => {
+                        if (texto == 'saldo_maximo_excedido'){
+                            console.log(texto)
+                            divErrorRef.current.classList.toggle("errorInputVisible", true)
+                            divErrorRef.current.classList.toggle("errorInputOculto", false)
+                            divErrorRef.current.textContent ="Este movimiento excede el saldo maximo ($ 99.999.999,99)";
+                        } else if (texto == 'saldo_minimo_excedido'){
+                            console.log(texto)
+                            divErrorRef.current.classList.toggle("errorInputVisible", true)
+                            divErrorRef.current.classList.toggle("errorInputOculto", false)
+                            divErrorRef.current.textContent ="Este movimiento excede el saldo minimo ($ -99.999.999,99)";
+                        }
+                        else if (texto != "")
+                            throw new Error(texto);
+                        //esto no deberia ocurrir nunca ya que hago chequeos en el frontend
+                    }
+                ).catch(error => console.log("errror "+error));
+        }    
     }
 
     const clickSiguiente = () => {
