@@ -52,15 +52,6 @@ function cerrarSesion(){
   setComponenteActivo(0);
 }
 
-
-function setCajaActivo(){
-  setComponenteActivo(2);
-}
-
-function setMovActivo(){
-  setComponenteActivo(3);
-}
-
   return (
     <>
       <header>
@@ -69,18 +60,19 @@ function setMovActivo(){
           { !logueado ? 
           (
             <> 
-              <li><a href="#">Inicio</a></li>
+              <li><a href="#" onClick={ () => setComponenteActivo(0)}>Inicio</a></li>
 
             </>
             ) 
           : (
               <>
-                <li><a href="#" onClick={setCajaActivo}>Cajas</a></li>
-                <li><a href="#" onClick={setMovActivo}>Movimientos</a></li>
+                <li><a href="#" onClick={ () => setComponenteActivo(1)}>{userName}</a></li>
+                <li><a href="#" onClick={ () => setComponenteActivo(2)}>Cajas</a></li>
+                <li><a href="#" onClick={ () => setComponenteActivo(3)}>Movimientos</a></li>
                 <li><a href="#" onClick = {cerrarSesion}>Salir</a></li>
               </>
           )}
-              <li><a href="#">Acerca de</a></li>
+              <li><a href="#" onClick={ () => setComponenteActivo(4)}>Acerca de</a></li>
           
           
           
@@ -93,6 +85,7 @@ function setMovActivo(){
           { componenteActivo === 1 && <h1>Bienvenido {userName}</h1>}
           { componenteActivo === 2 && <Cajas userId={userId} cerrarSesion={cerrarSesion} />}
           { componenteActivo === 3 && <Movimientos userId={userId} cerrarSesion={cerrarSesion}/>}
+          { componenteActivo === 4 && <div>Acerca de</div>}
         </main>
 
         <footer>

@@ -42,8 +42,13 @@ function TablaCajas({userId, cerrarSesion}){
          const data = await response.json();
          console.log('Datos obtenidos (cajas):', data);
 
-         if (divcargando.current != null)
-            divcargando.current.textContent = "";
+         if (divcargando.current != null){
+            if (data.length == 0)
+                divcargando.current.textContent = "No hay cajas";
+            else
+                divcargando.current.textContent = "";
+         }
+            
 
          return data;    
     }
