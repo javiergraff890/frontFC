@@ -17,8 +17,12 @@ function TablaCajas({userId, cerrarSesion}){
     const initialized = useRef(false);
     const inputNombreRef = useRef(null);
     const inputSaldoRef = useRef(null);
+    const [botonesActivos, setBotonesActivos] = useState(false);
+    const divcargando = useRef(false);
 
     async function getCajas(){
+        if (divcargando.current != null)
+            divcargando.current.textContent = "Cargando cajas ...";
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'GET',
@@ -37,6 +41,10 @@ function TablaCajas({userId, cerrarSesion}){
 
          const data = await response.json();
          console.log('Datos obtenidos (cajas):', data);
+
+         if (divcargando.current != null)
+            divcargando.current.textContent = "";
+
          return data;    
     }
 
@@ -44,6 +52,7 @@ function TablaCajas({userId, cerrarSesion}){
         if (initialized.current){
             getCajas().then( data => {
                 setCajas(data)
+                setBotonesActivos(true);
             })
         } else {
             initialized.current = true;
@@ -51,29 +60,34 @@ function TablaCajas({userId, cerrarSesion}){
     }, [])
     
     const eventEliminar = (id) => {
-        console.log("toque eliminar al id= "+id)
-        const token = localStorage.getItem('token');
-        const requestOptions = {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-            // headers: { 'Content-Type': 'application/json' },
-            // body: JSON.stringify({})
-        };
 
-        fetch('https://localhost:7178/caja/'+id, requestOptions).then(
-            response => {
-                console.log(response)
-                if (response.status == 401){
-                    swal('Sesion expirada', 'Vuelva a iniciar sesion', )
-                    cerrarSesion()
-                } else
-                    getCajas().then( data => {
-                        setCajas(data)
-                    })
-            }
-        )
+        if (botonesActivos){
+            setBotonesActivos(false);
+            console.log("toque eliminar al id= "+id)
+            const token = localStorage.getItem('token');
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+                // headers: { 'Content-Type': 'application/json' },
+                // body: JSON.stringify({})
+            };
+
+            fetch('https://localhost:7178/caja/'+id, requestOptions).then(
+                response => {
+                    console.log(response)
+                    if (response.status == 401){
+                        swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+                        cerrarSesion()
+                    } else
+                        getCajas().then( data => {
+                            setCajas(data)
+                            setBotonesActivos(true);
+                        })
+                }
+            ).catch( error => console.log(error))
+        }
 
     }
     //sacada de GPT!
@@ -92,44 +106,54 @@ function TablaCajas({userId, cerrarSesion}){
         event.preventDefault();
         //const nombre = document.getElementById("nombre").value;
         //const saldo = document.getElementById("saldo").value;
-        const nombre = inputNombreRef.current.value;
-        const saldo = inputSaldoRef.current.value;
-        const token = localStorage.getItem('token');
-        const requestOptions = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                "caja" : {
-                    "nombre" : nombre,
-                    "saldo" : saldo,
-                    "userId": userId
+        if (botonesActivos){
+            setBotonesActivos(false);
+            const nombre = inputNombreRef.current.value;
+            const saldo = inputSaldoRef.current.value;
+            const token = localStorage.getItem('token');
+            const requestOptions = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                "fecha" : fechaActual()   
-            })
-        };
-    
-        inputNombreRef.current.value = "";
-        inputSaldoRef.current.value = "";
-        fetch('https://localhost:7178/caja', requestOptions)
-        .then(response => {
-            console.log(response)
-            if (response.status == 204){
-                console.log("se ingreso nombre repetido");
-                setnombreDuplicado(true);
-            } else if (response.status == 401){
-                swal('Sesion expirada', 'Vuelva a iniciar sesion - nueva caja\n'+obtenerFechaExpiracion(token) )
-                cerrarSesion()
-            } else {
-                getCajas().then( data => {
-                    setCajas(data)
+                body: JSON.stringify({
+                    "caja" : {
+                        "nombre" : nombre,
+                        "saldo" : saldo,
+                        "userId": userId
+                    },
+                    "fecha" : fechaActual()   
                 })
-                if (nombreDuplicado)
-                    setnombreDuplicado(false);
-            }
-        }).catch(error => console.log(error));}
+            };
+        
+            inputNombreRef.current.value = "";
+            inputSaldoRef.current.value = "";
+            fetch('https://localhost:7178/caja', requestOptions)
+            .then(response => {
+                console.log(response)
+                if (response.status == 204){
+                    console.log("se ingreso nombre repetido");
+                    setnombreDuplicado(true);
+                    setBotonesActivos(true);
+                } else if (response.status == 401){
+                    swal('Sesion expirada', 'Vuelva a iniciar sesion - nueva caja\n'+obtenerFechaExpiracion(token) )
+                    cerrarSesion()
+                } else {
+                    getCajas().then( data => {
+                        setCajas(data)
+                        setBotonesActivos(true);
+                    })
+                    
+                    if (nombreDuplicado)
+                        setnombreDuplicado(false);
+                }
+                
+            }).catch(error => console.log(error));
+            
+        }
+    }
+
     return (
         <>
         <table className='tabla-cajas'>
@@ -147,23 +171,23 @@ function TablaCajas({userId, cerrarSesion}){
             <tr key={elem.id}>
                 <td>{elem.nombre}</td>
                 <td>{elem.saldo}</td>
-                <td><button onClick={() => eventEliminar(elem.id)}>X</button></td>
+                <td>{botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
             </tr>
             )
         }
         </tbody>
         </table>
-
-        <div>
+        <div className="divCargando" ref={divcargando}></div>
+        {/* <div> */}
             <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
                 <h2>Nueva caja</h2>
                 <input ref={inputNombreRef} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
-                <input ref={inputSaldoRef} type="number" step="0.01" id="saldo" name="saldo" placeholder='saldo inicial' required></input>
-                <button type="submit">Enviar</button>
+                <input ref={inputSaldoRef} type="number" step="0.01" id="saldo" name="saldo" placeholder='Saldo inicial' required></input>
+                <button disabled={!botonesActivos} type="submit">Enviar</button>
                 <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
                 :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
             </form>
-        </div>
+        {/* </div> */}
             
         </>
     );

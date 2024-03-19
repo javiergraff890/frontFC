@@ -2,7 +2,7 @@
 .tabla-cajas{
     width: 500px;
     margin-top:50px;
-    margin-bottom:20px;
+    margin-bottom:5px;
     caption-side: bottom;
     margin-left: auto;
     margin-right: auto;
@@ -19,6 +19,7 @@ td, th {
 
 .form-nueva-caja input{
     margin-right: 5px;
+    padding: 5px;
 }
 
 .form-nueva-caja-spanDuplicado-visible{
@@ -28,4 +29,21 @@ td, th {
 
 .form-nueva-caja-spanDuplicado-oculto{
     visibility: hidden;
+}
+
+.divCargando{
+    font-size:12px;
+    height: 20px;
+}
+
+.form-nueva-caja{
+    margin-top:0px;
+}
+
+.form-nueva-caja button {
+    padding: 5px;
+}
+
+.enviarAnulado{
+    color:rgb(51, 35, 22);
 }

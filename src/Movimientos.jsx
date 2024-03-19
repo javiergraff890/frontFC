@@ -206,6 +206,8 @@ function TablaMovimientos ({cerrarSesion}) {
         return (concepto.length <=200);
     }
 
+    //por lo pronto permito que se ignresen movs mientras se eliminan otras o se pasa de pagina
+    //el asincronismo deberia ordenar, en caso de inconisistencias debo arreglar esto
     const handleSubmit = (event) =>{
         event.preventDefault()
 
