@@ -29,6 +29,7 @@ function TablaMovimientos ({cerrarSesion}) {
     const initializedPaginaActual = useRef(false);
     const divErrorRef = useRef(false);
     const botonIngresoEgreso = useRef(false);
+    const [cantidadMovs, setCantidadMovs] = useState(1);
     
     //true ingreso, false egreso
     const [ingreso, setIngreso] = useState(true);
@@ -121,6 +122,7 @@ function TablaMovimientos ({cerrarSesion}) {
          
          console.log('Datos obtenidos (movs):', data);
          sethayOtraPag(data.siguiente);
+         setCantidadMovs(data.cantidadMovs);
          if (divcargando.current != null)
             if (data.movs.length == 0)
                 divcargando.current.textContent = "No hay cajas";
@@ -394,7 +396,7 @@ function TablaMovimientos ({cerrarSesion}) {
                 </div>
                 {
                     botonesActivos ? 
-                    <span>Página {paginaActual+1}</span>
+                    <span>Página {paginaActual+1}/{ Math.ceil(cantidadMovs / cantidadPorPagina) }</span>
                     : <span>Cargando página</span>
                 }
                 
