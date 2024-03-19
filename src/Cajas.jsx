@@ -15,7 +15,8 @@ function TablaCajas({userId, cerrarSesion}){
     const [cajas, setCajas] = useState([]);
     const [nombreDuplicado, setnombreDuplicado] = useState(false)
     const initialized = useRef(false);
-    
+    const inputNombreRef = useRef(null);
+    const inputSaldoRef = useRef(null);
 
     async function getCajas(){
         const token = localStorage.getItem('token');
@@ -89,8 +90,10 @@ function TablaCajas({userId, cerrarSesion}){
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const nombre = document.getElementById("nombre").value;
-        const saldo = document.getElementById("saldo").value;
+        //const nombre = document.getElementById("nombre").value;
+        //const saldo = document.getElementById("saldo").value;
+        const nombre = inputNombreRef.current.value;
+        const saldo = inputSaldoRef.current.value;
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'POST',
@@ -108,6 +111,8 @@ function TablaCajas({userId, cerrarSesion}){
             })
         };
     
+        inputNombreRef.current.value = "";
+        inputSaldoRef.current.value = "";
         fetch('https://localhost:7178/caja', requestOptions)
         .then(response => {
             console.log(response)
@@ -152,8 +157,8 @@ function TablaCajas({userId, cerrarSesion}){
         <div>
             <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
                 <h2>Nueva caja</h2>
-                <input type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
-                <input type="number" step="0.01" id="saldo" name="saldo" placeholder='saldo inicial' required></input>
+                <input ref={inputNombreRef} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
+                <input ref={inputSaldoRef} type="number" step="0.01" id="saldo" name="saldo" placeholder='saldo inicial' required></input>
                 <button type="submit">Enviar</button>
                 <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
                 :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>

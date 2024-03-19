@@ -243,6 +243,9 @@ function TablaMovimientos ({cerrarSesion}) {
             
         };
 
+        inputValorRef.current.value = "";
+        inputConceptoRef.current.value = "";
+
         fetch(endpoints.ENDPOINT_POST_MOVS,requestOptions).then(
             response => {
                     console.log(response)
@@ -278,6 +281,7 @@ function TablaMovimientos ({cerrarSesion}) {
                     //esto no deberia ocurrir nunca ya que hago chequeos en el frontend
                 }
             ).catch(error => console.log("errror "+error));
+            
     }
 
     const clickSiguiente = () => {
