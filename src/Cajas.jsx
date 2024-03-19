@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import './Cajas.css'
 import {fechaActual} from './funciones.js'
 import swal from 'sweetalert'
+import { Chart } from "react-google-charts";
 
 export default function Cajas({userId, cerrarSesion}){
     return (
@@ -193,9 +194,53 @@ function TablaCajas({userId, cerrarSesion}){
                 :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
             </form>
         {/* </div> */}
-            
+        {
+            cajas.length != 0 && <GraficoCajas  cajas={cajas}/>
+        }
+        
         </>
     );
+}
+
+function GraficoCajas({cajas}){
+
+    const data = []
+    var totalCajas = 0;
+    data.push(["Nombre", "Saldo"]);
+    cajas.map( (c) => {
+            data.push([c.nombre, c.saldo])
+            totalCajas+=c.saldo;
+        })
+
+    
+    //cajas.foreach( c => console.log([c.nombre, c.saldo]))
+    // const data = [
+    //     ["Task", "Hours per Day"],
+    //     ["Work", 11],
+    //     ["Eat", 2],
+    //     ["Commute", 2],
+    //     ["Watch TV", 2],
+    //     ["Sleep", 7],
+    //   ];
+
+      const options = {
+        title: "Total Cajas : $"+totalCajas,
+        is3D: true,
+         backgroundColor: '#7e9973'
+      };
+    
+    return (
+        <div className="divChart">
+            <Chart
+                chartType="PieChart"
+                data={data}
+                options={options}
+                width={"100%"}
+                height={"200px"}
+            />
+        </div>
+        
+      );
 }
 
 

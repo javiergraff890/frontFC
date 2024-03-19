@@ -44,6 +44,6 @@ td, th {
     padding: 5px;
 }
 
-.enviarAnulado{
-    color:rgb(51, 35, 22);
+.divChart{
+    max-width: 700px;
 }
