@@ -168,15 +168,27 @@ function TablaMovimientos ({cerrarSesion}) {
                 response => {
                     console.log(response);
                     if (response.status == 401){
-                        swal('Sesion expirada', 'Vuelva a iniciar sesion', )
+                        swal('Sesion expirada', 'Vuelva a iniciar sesion')
                         cerrarSesion()
-                    } else
+                        return null;
+                    } else if (response.status == 422){
+                        console.log("olis")
+                       return response.text()
+                    } else {
                         getMovimientos().then( data => {
                             setMovs(data)
                             setBotonesActivos(true);
                         })
+                        return null;
+                    }
+                        
                 }
-            ).catch( ex => console.log(ex))
+            ).then( texto => {
+                if (texto!= null && texto == 'saldo_caja_inconsistente'){
+                    swal("No se puede remover este movimiento", "Deshacer este movimiento provoca que el saldo total de la caja exceda el saldo maximo o minimo")
+                    setBotonesActivos(true);
+                }
+            }).catch( ex => console.log(ex))
         } else {
             console.log("intente eliminar pero estadeshabilitado")
         }
