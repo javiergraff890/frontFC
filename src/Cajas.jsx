@@ -144,8 +144,10 @@ function TablaCajas({userId, cerrarSesion}){
                     setnombreDuplicado(true);
                     setBotonesActivos(true);
                 } else if (response.status == 401){
-                    swal('Sesion expirada', 'Vuelva a iniciar sesion - nueva caja\n'+obtenerFechaExpiracion(token) )
+                    swal('Sesion expirada', 'Vuelva a iniciar sesion' )
                     cerrarSesion()
+                } else if (response.status == 422){
+                    throw new Error("No se puede insertar");
                 } else {
                     getCajas().then( data => {
                         setCajas(data)
@@ -163,9 +165,9 @@ function TablaCajas({userId, cerrarSesion}){
 
     return (
         <>
-        <div className="divTablGrafico">
-            <button onClick={ () => setContenido(0)}>Tabla</button>
-            <button onClick={ () => setContenido(1)}>Grafico</button>
+        <div className="divTablaGrafico">
+            <button onClick={ () => setContenido(0)}><div>Tabla</div> <div><box-icon size='15px' name='table'></box-icon></div></button>
+            <button onClick={ () => setContenido(1)}>Grafico <box-icon size ='15px' name='pie-chart-alt-2'></box-icon></button>
         </div>
         { 
             //en lugar de este condicional hubiera sido mejor separar en dos componentes uno tabla y uno grafico
@@ -196,7 +198,7 @@ function TablaCajas({userId, cerrarSesion}){
 
             </>
             : 
-                <GraficoCajas  cajas={cajas}/>
+                ((cajas.length == 0) ? <></> : <GraficoCajas  cajas={cajas}/> )
             }
 
             <div className="divCargando" ref={divcargando}></div>

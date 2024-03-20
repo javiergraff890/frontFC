@@ -1,7 +1,7 @@
 
 .tabla-cajas{
     width: 500px;
-    margin-top:50px;
+    margin-top:10px;
     margin-bottom:5px;
     caption-side: bottom;
     margin-left: auto;
@@ -45,5 +45,31 @@ td, th {
 }
 
 .divChart{
+    margin-top:10px;
     width: 500px;
+}
+
+.divTablaGrafico{
+    margin-top: 10px;
+}
+
+.divTablaGrafico{
+    display: flex;
+    justify-content: center;
+}
+
+.divTablaGrafico button {
+    padding: 5px;
+    width: 80px;
+    display: flex;
+    justify-content:space-around
+}
+
+.divTablaGrafico button:first-child {
+    margin-right: 5px;
+}
+
+
+.iconoBoton{
+    padding: 5px;
 }
