@@ -20,6 +20,7 @@ function TablaCajas({userId, cerrarSesion}){
     const inputSaldoRef = useRef(null);
     const [botonesActivos, setBotonesActivos] = useState(false);
     const divcargando = useRef(false);
+    const [contenido, setContenido] = useState(0);
 
     async function getCajas(){
         if (divcargando.current != null)
@@ -162,42 +163,55 @@ function TablaCajas({userId, cerrarSesion}){
 
     return (
         <>
-        <table className='tabla-cajas'>
-            {/* <caption>Cajas</caption> */}
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Saldo</th>
-                    <th>Eliminar</th>
+        <div className="divTablGrafico">
+            <button onClick={ () => setContenido(0)}>Tabla</button>
+            <button onClick={ () => setContenido(1)}>Grafico</button>
+        </div>
+        { 
+            //en lugar de este condicional hubiera sido mejor separar en dos componentes uno tabla y uno grafico
+            //sin embargo como eso requeria rediseñar gran parte del componente principal queda como pendiente
+            contenido === 0 ? 
+            <>
+            <table className='tabla-cajas'>
+                {/* <caption>Cajas</caption> */}
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Saldo</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {
+                cajas.map( (elem) =>
+                <tr key={elem.id}>
+                    <td>{elem.nombre}</td>
+                    <td>{elem.saldo}</td>
+                    <td>{botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
                 </tr>
-            </thead>
-            <tbody>
-        {
-            cajas.map( (elem) =>
-            <tr key={elem.id}>
-                <td>{elem.nombre}</td>
-                <td>{elem.saldo}</td>
-                <td>{botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
-            </tr>
-            )
-        }
-        </tbody>
-        </table>
-        <div className="divCargando" ref={divcargando}></div>
-        {/* <div> */}
-            <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
-                <h2>Nueva caja</h2>
-                <input ref={inputNombreRef} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
-                <input ref={inputSaldoRef} type="number" step="0.01" id="saldo" name="saldo" placeholder='Saldo inicial' required></input>
-                <button disabled={!botonesActivos} type="submit">Enviar</button>
-                <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
-                :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
-            </form>
-        {/* </div> */}
-        {
-            cajas.length != 0 && <GraficoCajas  cajas={cajas}/>
-        }
-        
+                )
+            }
+            </tbody>
+            </table>
+
+            </>
+            : 
+                <GraficoCajas  cajas={cajas}/>
+            }
+
+            <div className="divCargando" ref={divcargando}></div>
+            {/* <div> */}
+                <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
+                    <h2>Nueva caja</h2>
+                    <input ref={inputNombreRef} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
+                    <input ref={inputSaldoRef} type="number" step="0.01" id="saldo" name="saldo" placeholder='Saldo inicial' required></input>
+                    <button disabled={!botonesActivos} type="submit">Enviar</button>
+                    <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
+                    :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
+                </form>
+            {/* </div> */}
+            
+            
         </>
     );
 }
@@ -226,18 +240,21 @@ function GraficoCajas({cajas}){
       const options = {
         title: "Total Cajas : $"+totalCajas,
         is3D: true,
-         backgroundColor: '#7e9973'
+         backgroundColor: '#465c80'
       };
     
+
+
     return (
         <div className="divChart">
-            <Chart
-                chartType="PieChart"
-                data={data}
-                options={options}
-                width={"100%"}
-                height={"200px"}
-            />
+                <Chart
+                    chartType="PieChart"
+                    data={data}
+                    options={options}
+                    width={"100%"}
+                    height={"200px"}
+                />
+            
         </div>
         
       );
