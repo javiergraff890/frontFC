@@ -191,9 +191,9 @@ function TablaCajas({userId, cerrarSesion}){
             {
                 cajas.map( (elem) =>
                 <tr key={elem.id}>
-                    <td>{elem.nombre}</td>
-                    <td>{elem.saldo}</td>
-                    <td>{botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
+                    <td className="columnaNombre">{elem.nombre}</td>
+                    <td className="columnaSaldo">{elem.saldo}</td>
+                    <td className="columnaEliminar">{botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
                 </tr>
                 )
             }
@@ -216,6 +216,8 @@ function TablaCajas({userId, cerrarSesion}){
                     :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
                 </form>
             {/* </div> */}
+
+
             
             
         </>

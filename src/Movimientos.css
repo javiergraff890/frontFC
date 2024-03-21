@@ -65,7 +65,9 @@ td, th {
 }
 
 .columnaCaja{
-    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    overflow-x :auto;
 }
 
 .font-columnaCaja{
@@ -93,7 +95,16 @@ td, th {
 .divNuevoMov select {
     padding: 5px;
     min-width: 100px;
+    max-width: 100px;
     text-align: center;
+    overflow: hidden;
+}
+
+.divNuevoMov option {
+    max-width: 100px;
+    overflow: hidden; /* Ocultar el texto que excede el ancho máximo */
+    text-overflow: ellipsis; /* Mostrar puntos suspensivos (...) cuando el texto se corta */
+    white-space: nowrap; /* Evitar el salto de línea del texto */
 }
 
 .ingreso {
@@ -123,3 +134,19 @@ td, th {
     height: 20px;
 }
 
+
+
+
+/*estos ajustes del scroll los saque de gpt*/
+::-webkit-scrollbar {
+    height: 5px; /* Ancho de la barra de desplazamiento */
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color de fondo de la barra de desplazamiento */
+  }
+  
+  /* Puntero de la barra de desplazamiento */
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Color del puntero de la barra de desplazamiento */
+    border-radius: 10px; /* Radio de borde del puntero de la barra de desplazamiento */
+  }

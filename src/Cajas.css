@@ -73,3 +73,38 @@ td, th {
 .iconoBoton{
     padding: 5px;
 }
+
+
+.columnaNombre{
+    min-width:200px;
+    max-width: 200px;
+    overflow-x :auto;
+    /* overflow-x: hidden; */
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+/*A estos ajustes del scroll los saque de gpt*/
+    ::-webkit-scrollbar {
+    height: 5px; /* Ancho de la barra de desplazamiento */
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color de fondo de la barra de desplazamiento */
+  }
+  
+  /* Puntero de la barra de desplazamiento */
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Color del puntero de la barra de desplazamiento */
+    border-radius: 10px; /* Radio de borde del puntero de la barra de desplazamiento */
+  }
+
+
+.columnaSaldo{
+    min-width:200px;
+    max-width: 200px;
+}
+
+.columnaEliminar{
+    min-width: 100px;
+    max-width: 100px;
+}
