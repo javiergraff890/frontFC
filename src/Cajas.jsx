@@ -147,7 +147,9 @@ function TablaCajas({userId, cerrarSesion}){
                     swal('Sesion expirada', 'Vuelva a iniciar sesion' )
                     cerrarSesion()
                 } else if (response.status == 422){
-                    throw new Error("No se puede insertar");
+                    swal("Error", "esta entrada provoco un error en el servidor, contacte al admin :(")
+                    setBotonesActivos(true)
+                    throw new Error("No se puede insertar, entradas invalidas");
                 } else {
                     getCajas().then( data => {
                         setCajas(data)
@@ -158,7 +160,9 @@ function TablaCajas({userId, cerrarSesion}){
                         setnombreDuplicado(false);
                 }
                 
-            }).catch(error => console.log(error));
+            }).catch(error => {
+                console.log(error)
+            });
             
         }
     }
@@ -205,8 +209,8 @@ function TablaCajas({userId, cerrarSesion}){
             {/* <div> */}
                 <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
                     <h2>Nueva caja</h2>
-                    <input ref={inputNombreRef} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
-                    <input ref={inputSaldoRef} type="number" step="0.01" id="saldo" name="saldo" placeholder='Saldo inicial' required></input>
+                    <input ref={inputNombreRef} maxLength={50} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
+                    <input ref={inputSaldoRef} type="number" min="0.0" max="99999999.99" step="0.01" id="saldo" name="saldo" placeholder='Saldo inicial' required></input>
                     <button disabled={!botonesActivos} type="submit">Enviar</button>
                     <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
                     :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
