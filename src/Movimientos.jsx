@@ -34,6 +34,7 @@ function TablaMovimientos ({cerrarSesion}) {
     //true ingreso, false egreso
     const [ingreso, setIngreso] = useState(true);
     // const [contador, setcontador] = useState(0);
+    const [selectedOption, setSelectedOption] = useState('default');
    
     // useEffect( () => {
     //     if (ingreso){
@@ -174,6 +175,7 @@ function TablaMovimientos ({cerrarSesion}) {
                         cerrarSesion()
                         return null;
                     } else if (response.status == 422){
+                        //caja inconsistente por ahora da lo mismo si excede el maximo o si supera el cero
                         console.log("olis")
                        return response.text()
                     } else {
@@ -187,7 +189,7 @@ function TablaMovimientos ({cerrarSesion}) {
                 }
             ).then( texto => {
                 if (texto!= null && texto == 'saldo_caja_inconsistente'){
-                    swal("No se puede remover este movimiento", "Deshacer este movimiento provoca que el saldo total de la caja exceda el saldo maximo o minimo")
+                    swal("No se puede remover este movimiento", "Deshacer este movimiento provoca que el saldo total de la caja sea negativo o exceda el saldo maximo")
                     setBotonesActivos(true);
                 }
             }).catch( ex => console.log(ex))
@@ -278,11 +280,11 @@ function TablaMovimientos ({cerrarSesion}) {
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
                             divErrorRef.current.classList.toggle("errorInputOculto", false)
                             divErrorRef.current.textContent ="Este movimiento excede el saldo maximo ($ 99.999.999,99)";
-                        } else if (texto == 'saldo_minimo_excedido'){
+                        } else if (texto == 'saldo_negativo'){
                             console.log(texto)
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
                             divErrorRef.current.classList.toggle("errorInputOculto", false)
-                            divErrorRef.current.textContent ="Este movimiento excede el saldo minimo ($ -99.999.999,99)";
+                            divErrorRef.current.textContent ="Este movimiento provoca un saldo de caja negativo";
                         }
                         else if (texto != "")
                             throw new Error(texto);
@@ -346,6 +348,10 @@ function TablaMovimientos ({cerrarSesion}) {
         console.log("gola")
         setIngreso(!ingreso)
     }
+
+    const handleChangeSelect = (event) => {
+        setSelectedOption(event.target.value);
+      };
 
 
     return (
@@ -411,7 +417,8 @@ function TablaMovimientos ({cerrarSesion}) {
                 {ingreso ? "+$ " : "- $ "}
                 </div >
                 <input ref={inputValorRef} type="number" maxLength="4" step="0.01" min="0.00" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
-                <select ref={selectRef}>
+                <select ref={selectRef} defaultValue={'DEFAULT'} onChange={handleChangeSelect}>
+                    <option value="DEFAULT" disabled>Caja</option>
                     {
                         Object.values(cajas).map( (elem) => 
                             <option key={elem.id} value={elem.id}>{elem.nombre}</option>
@@ -419,7 +426,7 @@ function TablaMovimientos ({cerrarSesion}) {
                     }
                 </select>
                 <button type="button" ref={botonIngresoEgreso} onClick={toggleIngresoEgreso} className={ingreso ? "ingreso" : "egreso"} >{ingreso ? "Ingreso" : "Egreso"}</button>
-                <button type="submit">Enviar</button>
+                <button disabled={selectedOption=='default'} type="submit">Enviar</button>
                 <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
                 </form>
             </div>
