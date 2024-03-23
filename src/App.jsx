@@ -3,7 +3,10 @@ import InicioSesion from './InicioSesion.jsx'
 import Cajas from './Cajas.jsx'
 import Movimientos from './Movimientos.jsx'
 import {useState, useEffect, useRef } from 'react'
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"
+import swal from 'sweetalert'
+import endpoints from './endpoints.js'
+
 
 function App() {
 const [logueado, setLogueado] = useState(false);
@@ -82,7 +85,7 @@ function cerrarSesion(){
       </header>
       <main>
           { componenteActivo === 0 && <InicioSesion nuevoInicio={nuevoInicio}/>}
-          { componenteActivo === 1 && <h1>Bienvenido {userName}</h1>}
+          { componenteActivo === 1 && <Usuario userName={userName} cerrarSesion={cerrarSesion}/>}
           { componenteActivo === 2 && <Cajas userId={userId} cerrarSesion={cerrarSesion} />}
           { componenteActivo === 3 && <Movimientos userId={userId} cerrarSesion={cerrarSesion}/>}
           { componenteActivo === 4 && <div>Acerca de</div>}
@@ -92,6 +95,52 @@ function cerrarSesion(){
           jjaviergraff@gmail.com
         </footer>
     </>
+  )
+}
+
+function Usuario({userName, cerrarSesion}){
+  
+  async function eliminarCuenta(){
+    const token = localStorage.getItem('token');
+
+      const RequestOptions = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    const response = await fetch(endpoints.ENDPOINT_DELETE_USER , RequestOptions)
+
+    return response;
+
+  }
+
+  const onSubmitDelete = () =>{
+    swal({
+      title: "Estas seguro que deseas eliminar tu cuenta?", 
+      text :"Se eliminaran todas las cajas y movimientos", 
+      icon: "warning",
+      buttons: ['Cancelar', 'Aceptar']
+    }).then( result => {
+      if (result){
+          eliminarCuenta().then( response => {
+            console.log(response)
+            cerrarSesion();
+          });
+        }
+          
+    });
+  }
+
+  return(
+    <>
+    <div>
+    <h1>Bienvenido <span>{userName}</span></h1>
+    <button onClick={onSubmitDelete} className="botonEliminarCuenta" type="button">Eliminar Cuenta</button>
+    </div>     
+    </>
+    
   )
 }
 

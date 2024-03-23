@@ -41,3 +41,8 @@ nav ul li a:hover {
 footer {
   font-size:10px;
 }
+
+.botonEliminarCuenta{
+  margin: 10px 0;
+  padding: 8px;
+}

@@ -4,7 +4,8 @@ const endpoints = {
     ENDPOINT_GET_CAJAS : 'https://localhost:7178/caja',
     ENDPOINT_GET_MOVS : 'https://localhost:7178/movimiento/',
     ENDPOINT_DELETE_MOVS : 'https://localhost:7178/movimiento/',
-    ENDPOINT_POST_MOVS :'https://localhost:7178/movimiento'
+    ENDPOINT_POST_MOVS :'https://localhost:7178/movimiento',
+    ENDPOINT_DELETE_USER : 'https://localhost:7178/user'
   };
   
   export default endpoints;
