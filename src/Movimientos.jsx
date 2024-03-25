@@ -78,7 +78,8 @@ function TablaMovimientos ({cerrarSesion}) {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'ngrok-skip-browser-warning' : 'skip-browser-warning'
             }
         };
 
@@ -105,7 +106,8 @@ function TablaMovimientos ({cerrarSesion}) {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'ngrok-skip-browser-warning' : 'skip-browser-warning'
             }
         };
         const inicial = (paginaActual) * cantidadPorPagina + 1;

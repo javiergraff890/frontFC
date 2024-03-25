@@ -108,3 +108,34 @@ td, th {
     min-width: 100px;
     max-width: 100px;
 }
+
+@media only screen and (max-width: 550px){
+
+    .tabla-cajas{
+        max-width: 300px;
+    }
+
+    td, th {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .columnaNombre{
+        min-width:150px;
+        max-width: 150px;
+        overflow-x :auto;
+    }
+
+    .columnaSaldo{
+        min-width: 100px;
+        max-width: 100px;
+    }
+    
+    .columnaEliminar{
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+}

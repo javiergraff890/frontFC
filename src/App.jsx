@@ -1,6 +1,7 @@
 import './App.css'
 import InicioSesion from './InicioSesion.jsx'
 import Cajas from './Cajas.jsx'
+import AcercaDe from './AcercaDe.jsx'
 import Movimientos from './Movimientos.jsx'
 import {useState, useEffect, useRef } from 'react'
 import { jwtDecode } from "jwt-decode"
@@ -88,7 +89,7 @@ function cerrarSesion(){
           { componenteActivo === 1 && <Usuario userName={userName} cerrarSesion={cerrarSesion}/>}
           { componenteActivo === 2 && <Cajas userId={userId} cerrarSesion={cerrarSesion} />}
           { componenteActivo === 3 && <Movimientos userId={userId} cerrarSesion={cerrarSesion}/>}
-          { componenteActivo === 4 && <div>Acerca de</div>}
+          { componenteActivo === 4 && <AcercaDe />}
         </main>
 
         <footer>

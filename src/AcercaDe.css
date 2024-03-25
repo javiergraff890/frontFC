@@ -1,0 +1,47 @@
+
+.container-acercaDe{
+    width: 600px;
+}
+
+h1 {
+    margin-top: 10px;
+    color:rgb(218, 252, 252)
+}
+
+h2 {
+    margin-top: 10px;
+    color:bisque
+}
+.divBotones{
+    display: flex;
+    justify-content:center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.divBotones button{
+    padding: 5px;
+    width: 100px;
+    height: 40px;
+
+}
+
+.mensajeInferior{
+    margin-top: 30px;
+}
+
+.contanierTec{
+    border: 1px solid rgb(149, 148, 148);
+    border-radius: 25px;
+    padding: 5px;
+}
+
+box-icon{
+    vertical-align: middle;
+}
+
+.divLinkGit{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}

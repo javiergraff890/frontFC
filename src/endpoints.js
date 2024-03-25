@@ -1,11 +1,15 @@
+//const base = 'https://localhost:7178';
+const base = 'https://abb9-181-229-197-65.ngrok-free.app'
 const endpoints = {
-    ENDPOINT_SUBMIT_SIGNUP : 'https://localhost:7178/user',
-    ENDPOINT_POST_LOGIN : 'https://localhost:7178/user/Login',
-    ENDPOINT_GET_CAJAS : 'https://localhost:7178/caja',
-    ENDPOINT_GET_MOVS : 'https://localhost:7178/movimiento/',
-    ENDPOINT_DELETE_MOVS : 'https://localhost:7178/movimiento/',
-    ENDPOINT_POST_MOVS :'https://localhost:7178/movimiento',
-    ENDPOINT_DELETE_USER : 'https://localhost:7178/user'
+    ENDPOINT_SUBMIT_SIGNUP : base+'/user',
+    ENDPOINT_POST_LOGIN : base+'/user/Login',
+    ENDPOINT_GET_CAJAS : base+'/caja',
+    ENDPOINT_GET_MOVS : base+'/movimiento/',
+    ENDPOINT_DELETE_MOVS : base+'/movimiento/',
+    ENDPOINT_POST_MOVS : base+'/movimiento',
+    ENDPOINT_DELETE_USER : base+'/user',
+    ENDPOINT_DELETE_CAJA : base+'/caja/',
+    ENDPOINT_POST_CAJA : base+'/caja'
   };
   
   export default endpoints;

@@ -3,6 +3,7 @@ import './Cajas.css'
 import {fechaActual} from './funciones.js'
 import swal from 'sweetalert'
 import { Chart } from "react-google-charts";
+import endpoints from './endpoints.js'
 
 export default function Cajas({userId, cerrarSesion}){
     return (
@@ -29,11 +30,12 @@ function TablaCajas({userId, cerrarSesion}){
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'ngrok-skip-browser-warning' : 'skip-browser-warning'
             }
         };
 
-        const response = await fetch('https://localhost:7178/caja',requestOptions);
+        const response = await fetch(endpoints.ENDPOINT_GET_CAJAS,requestOptions);
 
         if (response.status == 401){
             swal('Sesion expirada', 'Vuelva a iniciar sesion', )
@@ -81,7 +83,7 @@ function TablaCajas({userId, cerrarSesion}){
                 // body: JSON.stringify({})
             };
 
-            fetch('https://localhost:7178/caja/'+id, requestOptions).then(
+            fetch(endpoints.ENDPOINT_DELETE_CAJA+id, requestOptions).then(
                 response => {
                     console.log(response)
                     if (response.status == 401){
@@ -136,7 +138,7 @@ function TablaCajas({userId, cerrarSesion}){
         
             inputNombreRef.current.value = "";
             inputSaldoRef.current.value = "";
-            fetch('https://localhost:7178/caja', requestOptions)
+            fetch(endpoints.ENDPOINT_POST_CAJA, requestOptions)
             .then(response => {
                 console.log(response)
                 if (response.status == 204){
