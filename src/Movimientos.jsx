@@ -281,12 +281,12 @@ function TablaMovimientos ({cerrarSesion}) {
                             console.log(texto)
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
                             divErrorRef.current.classList.toggle("errorInputOculto", false)
-                            divErrorRef.current.textContent ="Este movimiento excede el saldo maximo ($ 99.999.999,99)";
+                            divErrorRef.current.textContent ="Este movimiento excede el saldo maximo de la caja ($ 99.999.999,99)";
                         } else if (texto == 'saldo_negativo'){
                             console.log(texto)
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
                             divErrorRef.current.classList.toggle("errorInputOculto", false)
-                            divErrorRef.current.textContent ="Este movimiento provoca un saldo de caja negativo";
+                            divErrorRef.current.textContent ="Este movimiento provoca un saldo de caja negativo en la caja";
                         }
                         else if (texto != "")
                             throw new Error(texto);
@@ -362,11 +362,11 @@ function TablaMovimientos ({cerrarSesion}) {
             {/* <caption>Cajas</caption> */}
             <thead>
                 <tr>
-                    <th className="columnaConcepto">Concepto</th>
-                    <th className="columnaFecha">Fecha</th>
-                    <th className="columnaValor">Valor</th>
-                    <th className="columnaCaja">Caja</th>
-                    <th className="columnaEliminar">Eliminar</th>
+                    <th className="columnaConcepto-mov">Concepto</th>
+                    <th className="columnaFecha-mov">Fecha</th>
+                    <th className="columnaValor-mov">Valor</th>
+                    <th className="columnaCaja-mov">Caja</th>
+                    <th className="columnaEliminar-mov">Eliminar</th>
                 </tr>
             </thead>
             <tbody>
@@ -418,12 +418,19 @@ function TablaMovimientos ({cerrarSesion}) {
              
                 <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
                 <h2>Nuevo Movimiento</h2>
-                
-                <input ref={inputConceptoRef} type="text"  maxLength="50" id="concepto" name="concepto" placeholder='Concepto' required></input>
-                <div className={ ingreso ? "divSignomas" : "divSignomenos"}>
-                {ingreso ? "+$ " : "- $ "}
-                </div >
-                <input ref={inputValorRef} type="number" maxLength="4" step="0.01" min="0.00" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
+                <div className="container-nuevo-mov">
+                <div>
+                    <input className="conceptoInput" ref={inputConceptoRef} type="text"  maxLength="50" id="concepto" name="concepto" placeholder='Concepto' required></input>
+                </div>
+                <div className="divValorInput">
+                    <div className={ ingreso ? "divSignomas" : "divSignomenos"}>
+                    {ingreso ? "+$ " : "- $ "}
+                    </div >
+                    <input className="inputValor" ref={inputValorRef} type="number" maxLength="4" step="0.01" min="0.00" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
+                </div>
+                <div>
+
+
                 <select ref={selectRef} defaultValue={'DEFAULT'} onChange={handleChangeSelect}>
                     <option value="DEFAULT" disabled>Caja</option>
                     {
@@ -432,8 +439,14 @@ function TablaMovimientos ({cerrarSesion}) {
                          )
                     }
                 </select>
-                <button type="button" ref={botonIngresoEgreso} onClick={toggleIngresoEgreso} className={ingreso ? "ingreso" : "egreso"} >{ingreso ? "Ingreso" : "Egreso"}</button>
-                <button disabled={selectedOption=='default'} type="submit">Enviar</button>
+                </div>
+                <div>
+                    <button type="button" ref={botonIngresoEgreso} onClick={toggleIngresoEgreso} className={ingreso ? "ingreso" : "egreso"} >{ingreso ? "Ingreso" : "Egreso"}</button>
+                </div>
+                <div>
+                    <button disabled={selectedOption=='default'} type="submit">Enviar</button>
+                </div>
+                </div>
                 <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
                 </form>
             </div>

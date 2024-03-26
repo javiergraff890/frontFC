@@ -48,7 +48,8 @@
 
 
 .columnaFecha-mov{
-    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
 }
 
 .font-columnaFecha{
@@ -170,7 +171,111 @@
     display: none;
   }
 
-  @media only screen and (max-width: 550px){
+  .container-nuevo-mov{
+    display: flex;
+    justify-content: center;
+  }
+
+  @media only screen and (max-width: 772px){
+
+    .tabla-movimientos{
+        width: 560px;
+    }
+
+    .columnaFecha-mov{
+        min-width: 100px;
+        max-width: 100px;
+    }
+    
+    .font-columnaFecha{
+        font-size: 12px;
+    }
+    
+    .columnaConcepto-mov{
+        min-width:150px;
+        max-width: 150px;
+    }
+    
+    .columnaValor-mov{
+        min-width: 130px;
+        max-width: 130px;
+    }
+    
+    .columnaEliminar-mov{
+        max-width: 80px;
+        min-width: 80px;
+    }
+    
+    .columnaCaja-mov{
+        min-width: 100px;
+        max-width: 100px;
+    }
+    
+    .font-columnaCaja{
+        font-size: 15px;
+    }
+
+
+    .tabla-movimientos td, .tabla-movimientos th {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+
+    /*parte del nuevo movimiento*/
+    .divNuevoMov form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container-nuevo-mov{
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .divValorInput{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .inputValor{
+        width: 178px;
+    }
+
+    .form-nuevo-movimiento input{
+        margin-right: 0px;
+    }
+
+    .divNuevoMov select {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    .form-nuevo-movimiento button {
+        width: 200px;
+        margin: 0px;
+    }
+
+    .conceptoInput{
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    .errorInput{
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+
+  }
+
+  @media only screen and (max-width: 580px){
 
     .tabla-movimientos{
         width: 300px;

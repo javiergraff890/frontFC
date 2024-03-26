@@ -14,11 +14,12 @@
 }
 
 .tabla-cajas td, .tabla-cajas th {
+    height: 30px;
     border: 2px solid black;
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 /*por alguna razon estos estilos se comparten en los componentes caja y movimientos, ver por que */
@@ -136,7 +137,7 @@
     }
 
     .tabla-cajas td, .tabla-cajas th {
-        height: 50px;
+        height: 40px;
         padding-left: 5px;
         padding-right: 5px;
         padding-top: 0px;
@@ -158,7 +159,31 @@
         max-width: 50px;
     }
 
+    .form-nueva-caja{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
+    .conteiner-nueva-caja{
+        width: 200px;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .conteiner-nueva-caja input{
+        width: 200px;
+    }
+
+    .conteiner-nueva-caja button{
+        margin: 0px;
+    }
+
+    .divChart{
+        width: 300px;
+    }
 
 
 }

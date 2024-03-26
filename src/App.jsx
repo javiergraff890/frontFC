@@ -56,6 +56,7 @@ function cerrarSesion(){
   setComponenteActivo(0);
 }
 
+
   return (
     <>
       <header>
@@ -73,14 +74,20 @@ function cerrarSesion(){
                 <li><a href="#" onClick={ () => setComponenteActivo(1)}>{userName}</a></li>
                 <li><a href="#" onClick={ () => setComponenteActivo(2)}>Cajas</a></li>
                 <li><a href="#" onClick={ () => setComponenteActivo(3)}>Movimientos</a></li>
-                <li><a href="#" onClick = {cerrarSesion}>Salir</a></li>
+                
               </>
           )}
               <li><a href="#" onClick={ () => setComponenteActivo(4)}>Acerca de</a></li>
-          
-          
-          
-          
+            { logueado ? (
+              <>
+                  <li><a href="#"></a></li> 
+                  <li><a href="#" onClick = {cerrarSesion}>Salir</a></li>   
+              </>
+              
+                
+            ) :
+            <></>
+            }
         </ul>
         </nav>        
       </header>

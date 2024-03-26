@@ -211,11 +211,13 @@ function TablaCajas({userId, cerrarSesion}){
             {/* <div> */}
                 <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
                     <h2>Nueva caja</h2>
-                    <input ref={inputNombreRef} maxLength={50} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
-                    <input ref={inputSaldoRef} type="number" min="0.0" max="99999999.99" step="0.01" id="saldo" name="saldo" placeholder='Saldo inicial' required></input>
-                    <button disabled={!botonesActivos} type="submit">Enviar</button>
-                    <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
-                    :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
+                    <div className="conteiner-nueva-caja">
+                        <input ref={inputNombreRef} maxLength={50} type="text" id="nombre" name="nombre" placeholder='Nombre de la caja' required></input>
+                        <input ref={inputSaldoRef} type="number" min="0.0" max="99999999.99" step="0.01" id="saldo" name="saldo" placeholder='Saldo inicial' required></input>
+                        <button disabled={!botonesActivos} type="submit">Enviar</button>
+                        <p className={nombreDuplicado ? 'form-nueva-caja-spanDuplicado-visible'
+                        :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
+                    </div>
                 </form>
             {/* </div> */}
 
@@ -249,8 +251,9 @@ function GraficoCajas({cajas}){
 
       const options = {
         title: "Total Cajas : $"+totalCajas,
+        titleTextStyle: {fontSize: 15, fontName: 'Arial', bold: true, italic: false, color: '#87711a'},
         is3D: true,
-         backgroundColor: '#465c80'
+         backgroundColor: '#c2d4f2'
       };
     
 
