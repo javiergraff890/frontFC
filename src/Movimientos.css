@@ -8,17 +8,27 @@
     border-collapse: collapse;
 }
 
+
 .tabla-movimientos button {
-    padding-left: 2px;
-    padding-right: 2px;
+    padding: 0 10px;
+    /* padding-left: 2px;
+    padding-right: 2px; */
 }
 
-td, th {
+.tabla-movimientos td, .tabla-movimientos th {
     border: 2px solid black;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+.tabla-movimientos  th {
+    background-color: rgb(87, 85, 82);
+}
+
+.tabla-movimientos tr:hover {
+    background-color: rgb(87, 85, 82);
 }
 
 .form-nuevo-movimiento input{
@@ -37,7 +47,7 @@ td, th {
 }
 
 
-.columnaFecha{
+.columnaFecha-mov{
     width: 150px;
 }
 
@@ -45,29 +55,31 @@ td, th {
     font-size: 12px;
 }
 
-.columnaConcepto{
+.columnaConcepto-mov{
     min-width:200px;
     max-width: 200px;
-    overflow-x :auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
     /* overflow-x: hidden; */
 
 
 }
 
-.columnaValor{
+.columnaValor-mov{
     min-width: 150px;
     max-width: 150px;
 }
 
-.columnaEliminar{
+.columnaEliminar-mov{
     max-width: 90px;
     min-width: 90px;
 }
 
-.columnaCaja{
+.columnaCaja-mov{
     min-width: 150px;
     max-width: 150px;
-    overflow-x :auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .font-columnaCaja{
@@ -134,19 +146,96 @@ td, th {
     height: 20px;
 }
 
-
+.p-nombre {
+    text-overflow: ellipsis;
+    overflow: hidden;
+ }
 
 
 /*estos ajustes del scroll los saque de gpt*/
-::-webkit-scrollbar {
-    height: 5px; /* Ancho de la barra de desplazamiento */
+/* ::-webkit-scrollbar {
+    height: 5px; 
   }
   ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Color de fondo de la barra de desplazamiento */
+    background: #f1f1f1; 
   }
   
-  /* Puntero de la barra de desplazamiento */
+
   ::-webkit-scrollbar-thumb {
-    background: #888; /* Color del puntero de la barra de desplazamiento */
-    border-radius: 10px; /* Radio de borde del puntero de la barra de desplazamiento */
+    background: #888; 
+    border-radius: 10px; 
+  } */
+
+  .columnaEliminar-mov p, .desc-oculto{
+    display: none;
+  }
+
+  @media only screen and (max-width: 550px){
+
+    .tabla-movimientos{
+        width: 300px;
+    }
+
+    .tabla-movimientos td, .tabla-movimientos th {
+        border: 0px;
+    }
+
+    .tabla-movimientos thead {
+        display: none;
+    }
+
+
+
+    .tabla-movimientos tr {
+        margin-bottom: 8px;
+        border: 1px solid white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+
+    
+    .columnaConcepto-mov{
+        font-size: 25px;
+        min-width:300px;
+        max-width: 300px;
+        
+    }
+
+    .columnaValor-mov{
+        font-size:25px;
+    }
+
+    .columnaEliminar-mov{
+        max-width: 300px;
+        min-width: 300px;
+        border-top: 1px solid rgb(133, 127, 127);
+    }
+
+    .columnaEliminar-mov button{
+        font-size: 15px;
+        padding: 5px 20px;
+
+    }
+
+    .columnaEliminar-mov p, .columnaEliminar-mov button{
+        display: inline;
+    }
+
+    .desc-oculto{
+        display: inline; 
+    }
+
+    .columnaCaja-mov{
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .columnaCaja-mov span{
+        display: inline;
+    }
+
+
+
   }

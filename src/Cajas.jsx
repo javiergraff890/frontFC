@@ -193,7 +193,7 @@ function TablaCajas({userId, cerrarSesion}){
             {
                 cajas.map( (elem) =>
                 <tr key={elem.id}>
-                    <td className="columnaNombre">{elem.nombre}</td>
+                    <td className="columnaNombre"><p className="p-nombre" title={elem.nombre}>{elem.nombre}</p></td>
                     <td className="columnaSaldo">{elem.saldo}</td>
                     <td className="columnaEliminar">{botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
                 </tr>

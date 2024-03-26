@@ -362,8 +362,8 @@ function TablaMovimientos ({cerrarSesion}) {
             {/* <caption>Cajas</caption> */}
             <thead>
                 <tr>
-                    <th className="columnaFecha">Fecha</th>
                     <th className="columnaConcepto">Concepto</th>
+                    <th className="columnaFecha">Fecha</th>
                     <th className="columnaValor">Valor</th>
                     <th className="columnaCaja">Caja</th>
                     <th className="columnaEliminar">Eliminar</th>
@@ -373,11 +373,16 @@ function TablaMovimientos ({cerrarSesion}) {
         {
             movs.map( (elem) =>
             <tr key={elem.id}>
-                <td className="columnaFecha font-columnaFecha">{formatFecha(elem.fecha)}</td>
-                <td className="columnaConcepto">{elem.concepto}</td>
-                <td className="columnaValor">$ {elem.valor}</td>
-                <td className="columnaCaja font-columnaCaja">{cajas[elem.idCaja].nombre}</td>
-                <td className="columnaEliminar"> {botonesActivos ? <button onClick={() => eventEliminar(elem.id)}>X</button> : <></> }</td>
+                <td className="columnaConcepto-mov"><p className="p-nombre" title={elem.concepto}>{elem.concepto}</p></td>
+                <td className="columnaFecha-mov font-columnaFecha desc-visible">{formatFecha(elem.fecha)}</td>
+                <td className="columnaValor-mov">$ {elem.valor}</td>
+                <td className="columnaCaja-mov font-columnaCaja">
+                    <p className="p-nombre" title={cajas[elem.idCaja].nombre}> 
+                        <span className="desc-oculto spanCaja">Caja:&nbsp;</span>
+                        {cajas[elem.idCaja].nombre}
+                    </p>
+                </td>
+                <td className="columnaEliminar-mov"> {botonesActivos ? <button onClick={() => eventEliminar(elem.id)}><p className="desc-oculto">Eliminar </p>X</button> : <></> }</td>
             </tr>
             )
         }
