@@ -5,7 +5,7 @@ export default function AcercaDe(){
     return (
         <>
         <div className="container-acercaDe">
-            <h1>Tecnologias utilizadas</h1>
+            <h1>Tecnologías utilizadas</h1>
             <h2>Backend</h2>
             <div className="contanierTec">
                 <div className="divBotones">
@@ -19,7 +19,7 @@ export default function AcercaDe(){
                         <button>SQL SERVER</button>
                     </a>
                 </div>
-                <p>Se utilizo ademas <a href="https://jwt.io/">JWT</a> para la autenticacion de los usuarios, <a href="https://www.nuget.org/packages/BCrypt.Net-Next/">BCrypt</a> para hashear las password</p>
+                <p>Se utilizó además <a href="https://jwt.io/">JWT</a> para la autenticación de los usuarios, <a href="https://www.nuget.org/packages/BCrypt.Net-Next/">BCrypt</a> para hashear las passwords</p>
             </div>
             <a href="https://github.com/javiergraff890/backendFC">
                 <div className="divLinkGit">
@@ -39,7 +39,7 @@ export default function AcercaDe(){
                         <button>React</button>
                     </a>              
                 </div>
-                <p>Se utilizo <a href="https://vitejs.dev/">Vite</a> como soporte, la libreria <a href="https://sweetalert2.github.io/">Sweet alert</a> para mostrar avisos, <a href="https://www.react-google-charts.com/">React Google Charts</a> para graficos de cajas y <a href="https://boxicons.com/">Boxicons</a> para iconos de botones</p>
+                <p>Se utilizó <a href="https://vitejs.dev/">Vite</a> como soporte, la librería <a href="https://sweetalert2.github.io/">Sweet alert</a> para mostrar avisos, <a href="https://www.react-google-charts.com/">React Google Charts</a> para gráficos de cajas y <a href="https://boxicons.com/">Boxicons</a> para iconos de botones</p>
             </div>
             <a href="https://github.com/javiergraff890/frontFC">
                 <div className="divLinkGit">
@@ -52,6 +52,16 @@ export default function AcercaDe(){
                 </div>
             </a>
             <div className="mensajeInferior">
+                <p>
+                    El sistema está originalmente diseñado para un navegador web de un dispositivo con una pantalla no táctil como por ejemplo una notebook o una PC 
+                </p>
+                <p> A pesar de esto, el sistema está adaptado para verse correctamente en pantallas pequeñas, sin embargo, en teléfonos o tablets hay comportamientos no implementados como por ejemplo la visualización del overflow de textos. En dispositivos de escritorio se puede visualizar posando el mouse encima.
+                </p>
+                <div className="container-ejemplo">
+                    <h3>Ejemplo de visualización posando el mouse en el concepto</h3>
+                    <p>Este comportamiento no aplica para pantallas táctiles</p>
+                    <img src="/src/img/ejemplo.png"></img>
+                </div>
                 <p>Este proyecto fue realizado con un objetivo de aprendizaje, ante cualquier fallo o comportamiento inesperado se agradece un reporte al siguiente correo <a href="mailto:jjaviergraff@gmail.com">jjaviergraff@gmail.com</a> </p>
             </div>
             

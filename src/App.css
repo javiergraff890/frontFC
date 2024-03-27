@@ -49,7 +49,14 @@ footer {
   padding: 8px;
 }
 
+td, th {
+  white-space: nowrap;
+}
 
+.container-ejemplo{
+  border: 1px solid rgb(141, 127, 127);
+  margin: 10px 0;
+}
 
 /* Estilos del menú responsive */
 /*A esto lo he hecho antes a mano pero esta vez se lo pedi a gpt*/

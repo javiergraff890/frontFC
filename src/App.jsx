@@ -71,7 +71,7 @@ function cerrarSesion(){
             ) 
           : (
               <>
-                <li><a href="#" onClick={ () => setComponenteActivo(1)}>{userName}</a></li>
+                <li><a href="#" onClick={ () => setComponenteActivo(1)}>{userName.substring(0, 1).toUpperCase() + userName.substring(1)}</a></li>
                 <li><a href="#" onClick={ () => setComponenteActivo(2)}>Cajas</a></li>
                 <li><a href="#" onClick={ () => setComponenteActivo(3)}>Movimientos</a></li>
                 
@@ -140,6 +140,8 @@ function Usuario({userName, cerrarSesion}){
           
     });
   }
+
+  
 
   return(
     <>

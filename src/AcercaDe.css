@@ -45,3 +45,12 @@ box-icon{
     justify-content: center;
     gap: 5px;
 }
+
+.container-ejemplo{
+    background-color:beige;
+    margin-bottom: 30px;
+}
+
+.container-ejemplo h3, .container-ejemplo p{
+    color: black;
+}
