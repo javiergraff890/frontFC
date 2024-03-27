@@ -8,15 +8,13 @@ export default function InicioSesion({nuevoInicio}) {
     const [login, setLogin] = useState(true)
 
     const toggleComponente = () => {
-        setLogin(!login);
-      };
+        setLogin(!login)
+    }
 
     return (
         <>
             {login? <Login toggle={toggleComponente} nuevoInicio={nuevoInicio} /> : <Signup toggle={toggleComponente} nuevoInicio={nuevoInicio} /> }
-            {/* <button onClick={toggleComponente}>cambiar</button> */}
         </>
-        
     );
 }
 
@@ -24,17 +22,18 @@ export default function InicioSesion({nuevoInicio}) {
 
 function Signup({toggle, nuevoInicio}){
     const [userName, setuserName] = useState('')
-    const [creacionIncorrecta, setcreacionIncorrecta] = useState(false);
+    //const [creacionIncorrecta, setcreacionIncorrecta] = useState(false);
     const inputpassref = useRef(false);
+    const divError = useRef(null);
 
     const handleSubmitSignUp = (event) => {
         event.preventDefault();
-        console.log("estoy en singup");
+
         signup().then(
             response => {
-                console.log(response);
+                console.log("response del signup "+response);
             }
-        )
+        ).catch(error => console.log(error))
     }
     
     async function signup() {
@@ -51,20 +50,21 @@ function Signup({toggle, nuevoInicio}){
               })
         }
 
-        
         const response = await fetch(endpoints.ENDPOINT_SUBMIT_SIGNUP, requestOptions)
 
         if (response.ok){
-            console.log("usuario creado con exito");
-
             const token = await response.text();
             nuevoInicio(token);
         } else {
+            const err = await response.json();
+            console.log("errors:" +err.error.message);
+            if (err.error.code == "user_already_exist")
+                divError.current.textContent = err.error.message;
             setcreacionIncorrecta(true);
         }
-
-
+        return response;
     }
+    
     const handleChangeName = (event) => {
         setuserName(event.target.value);
 
@@ -84,17 +84,9 @@ function Signup({toggle, nuevoInicio}){
                     <box-icon name='lock-alt' color='#ffffff' ></box-icon>
                     <input ref={inputpassref} type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required/>
                 </div>
-                {
-                    creacionIncorrecta ? (
-                        <div className="divError">
-                            Usuario existente
-                        </div>
-                    )
-                    :
-                    <div className="divespacio">
-                         »
-                    </div>
-                }
+                <div ref ={divError} className="divError">
+                    &nbsp;
+                </div>
                 <div className="input-div">
                     <box-icon name='lock-alt' color='rgba(255,255,255,0)' ></box-icon>
                     <button className="btn" type="submit">Registrarse</button>
