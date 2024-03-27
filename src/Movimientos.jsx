@@ -128,7 +128,7 @@ function TablaMovimientos ({cerrarSesion}) {
          setCantidadMovs(data.cantidadMovs);
          if (divcargando.current != null)
             if (data.movs.length == 0)
-                divcargando.current.textContent = "No hay cajas";
+                divcargando.current.textContent = "No hay movimientos";
             else{
                 divcargando.current.textContent = "";
             }
@@ -180,13 +180,24 @@ function TablaMovimientos ({cerrarSesion}) {
                         //caja inconsistente por ahora da lo mismo si excede el maximo o si supera el cero
                         console.log("olis")
                        return response.text()
-                    } else {
-                        getMovimientos().then( data => {
-                            setMovs(data)
-                            setBotonesActivos(true);
-                        })
+                    } else if (response.status == 200){
+                        const cant_movs = cantidadMovs -1;
+                        console.log("cant_movs "+cant_movs+" cantxpag "+cantidadPorPagina+" paginaactual "+paginaActual);
+                        //en codigo pagina inicial es cero
+                        //esto se hace para cuando se elimna una pagina con 1 solo elemento, en caso de haber paginas anteriores
+                        //con este calculo se muesrta la pagina anterior, caso contrario se mostraba que no habia movimientos
+                        if ( (cant_movs % cantidadPorPagina == 0) && (cant_movs > 0) && (paginaActual > 0)){
+                            console.log("entre aca");
+                            setpaginaActual(paginaActual-1);
+                        } else {
+                            getMovimientos().then( data => {
+                                setMovs(data)
+                                setBotonesActivos(true);
+                            })
+                        }
                         return null;
                     }
+                    return null;
                         
                 }
             ).then( texto => {
