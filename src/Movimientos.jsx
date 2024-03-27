@@ -4,7 +4,7 @@ import {fechaActual} from './funciones.js'
 import  endpoints from './endpoints.js'
 import swal from 'sweetalert'
 
-export default function Movimientos({userId, cerrarSesion}){
+export default function Movimientos({ cerrarSesion }){
     return (
         <TablaMovimientos cerrarSesion={cerrarSesion} />
     );
@@ -23,7 +23,6 @@ function TablaMovimientos ({cerrarSesion}) {
     const [paginaActual, setpaginaActual] = useState(0);
     const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
-    // const mensajeExistenciaCajas = useRef(null);
     const [botonesActivos, setBotonesActivos] = useState(false);
     const divcargando = useRef(false);
     const initializedPaginaActual = useRef(false);
@@ -36,42 +35,25 @@ function TablaMovimientos ({cerrarSesion}) {
     // const [contador, setcontador] = useState(0);
     const [selectedOption, setSelectedOption] = useState('default');
    
+
+    /*Use efect que se usa para mostrar cajas y movimientos, los dejo comentados */
     // useEffect( () => {
-    //     if (ingreso){
-    //         botonIngresoEgreso.current.classList.toggle("ingreso", true);
-    //         botonIngresoEgreso.current.classList.toggle("egreso", false);
-    //     } else {
-    //         botonIngresoEgreso.current.classList.toggle("ingreso", false);
-    //         botonIngresoEgreso.current.classList.toggle("egreso", true);
-    //     }
+    //     if (initialized.current){
+    //         console.log("cajas")
+    //         console.log(cajas) 
+    //      } else {
+    //         initialized.current = true;
+    //      }
+    // }, [cajas]);
 
-    // }, [ingreso])
-
-    useEffect( () => {
-        if (initialized.current){
-            console.log("cajas")
-            console.log(cajas)
-        //     console.log("catidad de movs = "+Object.values(movs).length)
-            // console.log("veces que entre = "+contador)
-            // setcontador(contador+1)
-        //    
-         } else {
-            initialized.current = true;
-         }
-        
-    }, [cajas]);
-
-    useEffect( () => {
-        if (initializedmov.current){
-            console.log("movs")
-            console.log(movs)
-        //     console.log("catidad de movs = "+Object.values(movs).length)
-        //    
-         } else {
-            initializedmov.current = true;
-         }
-        
-    }, [movs]);
+    // useEffect( () => {
+    //     if (initializedmov.current){
+    //         console.log("movs")
+    //         console.log(movs)  
+    //      } else {
+    //         initializedmov.current = true;
+    //      }
+    // }, [movs]);
 
     async function getCajas(){
         const token = localStorage.getItem('token');

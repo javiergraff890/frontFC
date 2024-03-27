@@ -95,7 +95,7 @@ function cerrarSesion(){
           { componenteActivo === 0 && <InicioSesion nuevoInicio={nuevoInicio}/>}
           { componenteActivo === 1 && <Usuario userName={userName} cerrarSesion={cerrarSesion}/>}
           { componenteActivo === 2 && <Cajas userId={userId} cerrarSesion={cerrarSesion} />}
-          { componenteActivo === 3 && <Movimientos userId={userId} cerrarSesion={cerrarSesion}/>}
+          { componenteActivo === 3 && <Movimientos cerrarSesion={cerrarSesion}/>}
           { componenteActivo === 4 && <AcercaDe />}
         </main>
 
