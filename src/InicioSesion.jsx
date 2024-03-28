@@ -22,23 +22,17 @@ export default function InicioSesion({nuevoInicio}) {
 
 function Signup({toggle, nuevoInicio}){
     const [userName, setuserName] = useState('')
-    //const [creacionIncorrecta, setcreacionIncorrecta] = useState(false);
     const inputpassref = useRef(false);
     const divError = useRef(null);
 
     const handleSubmitSignUp = (event) => {
         event.preventDefault();
-
-        signup().then(
-            response => {
-                console.log("response del signup "+response);
-            }
-        ).catch(error => console.log(error))
+        signup().then().catch(error => console.log(error))
     }
     
     async function signup() {
-        const pass = inputpassref.current.value;
-
+        //const pass = inputpassref.current.value;
+        divError.current.textContent = "Creando usuario";
         const requestOptions = {
             method : 'POST',
             headers: {
@@ -46,7 +40,7 @@ function Signup({toggle, nuevoInicio}){
             },
             body : JSON.stringify({
                 "userName": userName,
-                "password": pass
+                "password": inputpassref.current.value
               })
         }
 
@@ -60,14 +54,12 @@ function Signup({toggle, nuevoInicio}){
             console.log("errors:" +err.error.message);
             if (err.error.code == "user_already_exist")
                 divError.current.textContent = err.error.message;
-            setcreacionIncorrecta(true);
         }
         return response;
     }
     
     const handleChangeName = (event) => {
         setuserName(event.target.value);
-
     }
 
 
@@ -75,27 +67,28 @@ function Signup({toggle, nuevoInicio}){
             <div className="conteiner">
                 <form onSubmit={handleSubmitSignUp}>
                     <h1>Sign Up</h1>
-                <div className="conteinerCampos">
-                <div className="input-div">
-                    <box-icon name='user' color='#ffffff'></box-icon>
-                    <input type="text" id="usuario" name="usuario" placeholder="Usuario" onChange={handleChangeName} required/>
-                </div>
-                <div className="input-div">
-                    <box-icon name='lock-alt' color='#ffffff' ></box-icon>
-                    <input ref={inputpassref} type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required/>
-                </div>
-                <div ref ={divError} className="divError">
-                    &nbsp;
-                </div>
-                <div className="input-div">
-                    <box-icon name='lock-alt' color='rgba(255,255,255,0)' ></box-icon>
-                    <button className="btn" type="submit">Registrarse</button>
-                </div>
-                </div>
-                <div className="registro-div">
-                    <p>Tenes una cuenta? <a href="#" onClick={toggle}>Iniciar sesión</a></p>
-                </div>
-                
+                    <div className="conteinerCampos">
+                        <div className="input-div">
+                            <box-icon name='user' color='#ffffff'></box-icon>
+                            <input type="text" id="usuario" name="usuario" placeholder="Usuario" onChange={handleChangeName} required/>
+                        </div>
+                        <div className="input-div">
+                            <box-icon name='lock-alt' color='#ffffff' ></box-icon>
+                            <input ref={inputpassref} type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required/>
+                        </div>
+                        <div ref ={divError} className="divError">
+                            &nbsp;
+                        </div>
+                        <div className="input-div">
+                            <box-icon name='lock-alt' color='rgba(255,255,255,0)' ></box-icon>
+                            <button className="btn" type="submit">Registrarse</button>
+                        </div>
+                    </div>
+                    <div className="registro-div">
+                        <p>Tenes una cuenta? 
+                            <a href="#" onClick={toggle}>Iniciar sesión</a>
+                        </p>
+                    </div>                
                 </form>
             </div>
     );
