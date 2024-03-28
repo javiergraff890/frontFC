@@ -31,7 +31,6 @@ function Signup({toggle, nuevoInicio}){
     }
     
     async function signup() {
-        //const pass = inputpassref.current.value;
         divError.current.textContent = "Creando usuario";
         const requestOptions = {
             method : 'POST',
@@ -97,9 +96,9 @@ function Signup({toggle, nuevoInicio}){
 function Login({toggle, nuevoInicio}){
     const [userName, setuserName] = useState('')
     const [datosCorrectos, setDatosCorrectos] = useState(true);
-    
+    const passwordInput = useRef(null);
+
     async function login(){
-        const pass = document.getElementById('password').value;
         const response = await fetch(endpoints.ENDPOINT_POST_LOGIN, {
                 method: 'POST',
                 headers: {
@@ -107,7 +106,7 @@ function Login({toggle, nuevoInicio}){
                 },
                 body : JSON.stringify({
                     "userName": userName,
-                    "password": pass
+                    "password": passwordInput.current.value
                   })
             })
             
@@ -161,7 +160,7 @@ function Login({toggle, nuevoInicio}){
             </div>
             <div className="input-div">
                 <box-icon name='lock-alt' color='#ffffff' ></box-icon>
-                <input type="password" id="password" name="password" placeholder="Contraseña" required/>
+                <input ref={passwordInput} type="password" id="password" name="password" placeholder="Contraseña" required/>
             </div>
             {
                 !datosCorrectos ? (
