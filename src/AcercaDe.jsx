@@ -52,6 +52,7 @@ export default function AcercaDe(){
                 </div>
             </a>
             <div className="mensajeInferior">
+                <h2>Diseño responsive</h2>
                 <p>
                     El sistema está originalmente diseñado para un navegador web de un dispositivo con una pantalla no táctil como por ejemplo una notebook o una PC 
                 </p>
@@ -62,6 +63,9 @@ export default function AcercaDe(){
                     <p>Este comportamiento no aplica para pantallas táctiles</p>
                     <img src="/src/img/ejemplo.png"></img>
                 </div>
+                <h2>Sesiones</h2>
+                <p>Cuando un usuario se loguea o crea una cuenta nueva, se genera un token que tiene una validez de 24 horas. Pasado ese tiempo la sesión caduca y se vuelven a solicitar las credenciales, en este período la sesión sigue activa sin importar si el navegador se cierra o el dispositivo se apague </p>
+                <h2>Gracias</h2>
                 <p>Este proyecto fue realizado con un objetivo de aprendizaje, ante cualquier fallo o comportamiento inesperado se agradece un reporte al siguiente correo <a href="mailto:jjaviergraff@gmail.com">jjaviergraff@gmail.com</a> </p>
             </div>
             
