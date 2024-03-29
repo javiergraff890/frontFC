@@ -97,6 +97,7 @@ function Login({toggle, nuevoInicio}){
     const [userName, setuserName] = useState('')
     const [datosCorrectos, setDatosCorrectos] = useState(true);
     const passwordInput = useRef(null);
+    const divErrorRef = useRef(null);
 
     async function login(){
         const response = await fetch(endpoints.ENDPOINT_POST_LOGIN, {
@@ -110,42 +111,35 @@ function Login({toggle, nuevoInicio}){
                   })
             })
             
-            if (!response.ok) {
+            if (response.ok) {
+                const token = await response.text();
+                return token;
+            }
+            else if (response.status == '401'){
+                const codigo = await response.text();
+                return codigo;
+            }else {
                 throw new Error(response.status); 
-              }
-           
-            const token = await response.text();
-            return token;
-            
-            
-
+            }    
     }
 
     const handleSubmit =  (event) => {
         event.preventDefault()
-        console.log("username = ",userName);
         
         login().then(token => {
-            console.log("token recibido: "+token);
-            //const tokenDecoded = jwtDecode(token);
-            //console.log(tokenDecoded)
-            nuevoInicio(token);
-        }).catch(error => {
-            if (error == "Error: 401"){
-                nuevoInicio('401');
-                setDatosCorrectos(false);
-                console.error("no autorizado");
-            } else {
-                console.error(error); 
+            console.log(token)
+            if (token == "user"){
+                divErrorRef.current.textContent = "El usuario no existe"
+            } else if (token == "password"){
+                divErrorRef.current.textContent = "Password incorrecta"
             }
-                
-            
-        })
+            else
+                nuevoInicio(token);
+        }).catch(error => { console.log(error) })
     }
 
     const handleChangeName = (event) => {
         setuserName(event.target.value);
-
     }
 
 
@@ -162,17 +156,9 @@ function Login({toggle, nuevoInicio}){
                 <box-icon name='lock-alt' color='#ffffff' ></box-icon>
                 <input ref={passwordInput} type="password" id="password" name="password" placeholder="Contraseña" required/>
             </div>
-            {
-                !datosCorrectos ? (
-                    <div className="divError">
-                        Usuario o Password Incorrectos
-                    </div>
-                )
-                :
-                    <div className="divespacio">
-                         »
-                    </div>
-            }
+            <div ref={divErrorRef} className="divError">
+                &nbsp;
+            </div>
             <div className="input-div">
                 <box-icon name='lock-alt' color='rgba(255,255,255,0)' ></box-icon>
                 <button className="btn" type="submit">Iniciar Sesión</button>
