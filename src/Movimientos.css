@@ -11,8 +11,6 @@
 
 .tabla-movimientos button {
     padding: 0 10px;
-    /* padding-left: 2px;
-    padding-right: 2px; */
 }
 
 td, th {
@@ -65,9 +63,6 @@ td, th {
     max-width: 200px;
     text-overflow: ellipsis;
     overflow: hidden;
-    /* overflow-x: hidden; */
-
-
 }
 
 .columnaValor-mov{
@@ -119,9 +114,9 @@ td, th {
 
 .divNuevoMov option {
     max-width: 100px;
-    overflow: hidden; /* Ocultar el texto que excede el ancho máximo */
-    text-overflow: ellipsis; /* Mostrar puntos suspensivos (...) cuando el texto se corta */
-    white-space: nowrap; /* Evitar el salto de línea del texto */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
 }
 
 .ingreso {
@@ -155,21 +150,6 @@ td, th {
     text-overflow: ellipsis;
     overflow: hidden;
  }
-
-
-/*estos ajustes del scroll los saque de gpt*/
-/* ::-webkit-scrollbar {
-    height: 5px; 
-  }
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-  }
-  
-
-  ::-webkit-scrollbar-thumb {
-    background: #888; 
-    border-radius: 10px; 
-  } */
 
   .columnaEliminar-mov p, .desc-oculto{
     display: none;
@@ -344,7 +324,5 @@ td, th {
     .columnaCaja-mov span{
         display: inline;
     }
-
-
 
   }

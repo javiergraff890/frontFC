@@ -16,8 +16,8 @@ function TablaMovimientos ({cerrarSesion}) {
     const inputConceptoRef = useRef(null);
     const inputValorRef = useRef(null);
     const selectRef = useRef(null);
-    const initialized = useRef(false);
-    const initializedmov = useRef(false);
+    //const initialized = useRef(false);
+    //const initializedmov = useRef(false);
     const initialized2 = useRef(false);
     const initialized3 = useRef(false);
     const [paginaActual, setpaginaActual] = useState(0);
@@ -74,7 +74,7 @@ function TablaMovimientos ({cerrarSesion}) {
         }
 
          const data = await response.json();
-         console.log('Datos obtenidos (cajas):', data);
+
          return data.reduce( (acc,elemento) => {
             acc[elemento.id] = elemento;
             return acc;
@@ -84,6 +84,7 @@ function TablaMovimientos ({cerrarSesion}) {
     async function getMovimientos(){
         if (divcargando.current != null)
             divcargando.current.textContent = "Cargando movimientos ...";
+        
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'GET',
@@ -92,9 +93,10 @@ function TablaMovimientos ({cerrarSesion}) {
                 'ngrok-skip-browser-warning' : 'skip-browser-warning'
             }
         };
+
         const inicial = (paginaActual) * cantidadPorPagina + 1;
         const endpoint = endpoints.ENDPOINT_GET_MOVS+inicial+'/'+cantidadPorPagina;
-        console.log("voy a enviar "+endpoint)
+
         const response = await fetch(endpoint,requestOptions);
 
         if (response.status == 401){
@@ -103,33 +105,30 @@ function TablaMovimientos ({cerrarSesion}) {
             return [];
         }
 
-         const data = await response.json();
-         
-         console.log('Datos obtenidos (movs):', data);
-         sethayOtraPag(data.siguiente);
-         setCantidadMovs(data.cantidadMovs);
-         if (divcargando.current != null)
+        const data = await response.json();
+
+        sethayOtraPag(data.siguiente);
+        setCantidadMovs(data.cantidadMovs);
+
+        if (divcargando.current != null)
             if (data.movs.length == 0)
                 divcargando.current.textContent = "No hay movimientos";
             else{
                 divcargando.current.textContent = "";
-            }
-            
+        }
          return data.movs;    
     }
 
+    //useeffect para la primer carga de movimientos y cajas, se espera a que ambas promesas se resuelvan
     useEffect( () => {
         if (initialized2.current){
-            // if (mensajeExistenciaCajas.current != null)
-            //     mensajeExistenciaCajas.current.textContent = "Cargando ..."
+            
             Promise.all([
                 getCajas(),
                 getMovimientos()
             ]).then( ([listacajas,listamovimientos]) => {
                 setCajas(listacajas)
                 setMovs(listamovimientos)
-                // if (mensajeExistenciaCajas.current != null)
-                //     mensajeExistenciaCajas.current.textContent = "No hay cajas"
                 setBotonesActivos(true);
             }).catch( error => {
                 console.error('Error al cargar datos:', error);
@@ -153,15 +152,14 @@ function TablaMovimientos ({cerrarSesion}) {
 
             fetch(endpoints.ENDPOINT_DELETE_MOVS+id, requestOptions).then(
                 response => {
-                    console.log(response);
+
                     if (response.status == 401){
                         swal('Sesion expirada', 'Vuelva a iniciar sesion')
                         cerrarSesion()
                         return null;
                     } else if (response.status == 422){
                         //caja inconsistente por ahora da lo mismo si excede el maximo o si supera el cero
-                        console.log("olis")
-                       return response.text()
+                        return response.text()
                     } else if (response.status == 200){
                         const cant_movs = cantidadMovs -1;
                         console.log("cant_movs "+cant_movs+" cantxpag "+cantidadPorPagina+" paginaactual "+paginaActual);
@@ -169,7 +167,6 @@ function TablaMovimientos ({cerrarSesion}) {
                         //esto se hace para cuando se elimna una pagina con 1 solo elemento, en caso de haber paginas anteriores
                         //con este calculo se muesrta la pagina anterior, caso contrario se mostraba que no habia movimientos
                         if ( (cant_movs % cantidadPorPagina == 0) && (cant_movs > 0) && (paginaActual > 0)){
-                            console.log("entre aca");
                             setpaginaActual(paginaActual-1);
                         } else {
                             getMovimientos().then( data => {
@@ -180,18 +177,17 @@ function TablaMovimientos ({cerrarSesion}) {
                         return null;
                     }
                     return null;
-                        
                 }
             ).then( texto => {
-                if (texto!= null && texto == 'saldo_caja_inconsistente'){
-                    swal("No se puede remover este movimiento", "Deshacer este movimiento provoca que el saldo total de la caja sea negativo o exceda el saldo maximo")
+                if (texto!= null && texto == 'saldo_caja_inconsistente_max'){
+                    swal("No se puede remover este movimiento", "Deshacer este movimiento provoca que el saldo total de la caja exceda el saldo máximo")
+                    setBotonesActivos(true);
+                } else if (texto!= null && texto == 'saldo_caja_inconsistente_min'){
+                    swal("No se puede remover este movimiento", "Deshacer este movimiento provoca que el saldo total de la caja sea negativo")
                     setBotonesActivos(true);
                 }
             }).catch( ex => console.log(ex))
-        } else {
-            console.log("intente eliminar pero estadeshabilitado")
         }
-        
     }
 
     function formatFecha(fecha){
@@ -201,10 +197,6 @@ function TablaMovimientos ({cerrarSesion}) {
         return dia + " ("+ hora+")";
     }
 
-    const checkConcepto = (concepto) => {
-        return (concepto.length <=200);
-    }
-
     //por lo pronto permito que se ignresen movs mientras se eliminan otras o se pasa de pagina
     //el asincronismo deberia ordenar, en caso de inconisistencias debo arreglar esto
     const handleSubmit = (event) =>{
@@ -212,6 +204,7 @@ function TablaMovimientos ({cerrarSesion}) {
 
         if (botonesActivos){
             setBotonesActivos(false);
+
             if (divErrorRef != null){
                 divErrorRef.current.classList.toggle("errorInputVisible", false)
                 divErrorRef.current.classList.toggle("errorInputOculto", true)
@@ -219,18 +212,14 @@ function TablaMovimientos ({cerrarSesion}) {
 
             const concepto = inputConceptoRef.current.value.trim();
             var valor = inputValorRef.current.value.trim();
+
             if (!ingreso){
                 valor = '-'+ inputValorRef.current.value.trim();
             }
+            
             const cajaSeleccionada = selectRef.current.value;
-            console.log("voy a insertar = "+concepto+" "+valor+" "+cajaSeleccionada)
-
-            console.log("tipo de valor = "+typeof(valor))
-            if (!checkConcepto(concepto)){
-                console.log("gola")
-            }
-
             const token = localStorage.getItem('token');
+            
             const requestOptions = {
                 method: 'POST',
                 headers: {
@@ -251,7 +240,6 @@ function TablaMovimientos ({cerrarSesion}) {
 
             fetch(endpoints.ENDPOINT_POST_MOVS,requestOptions).then(
                 response => {
-                        console.log(response)
                         if (response.ok){
                             getMovimientos().then( data => {
                                 setMovs(data)
@@ -267,14 +255,13 @@ function TablaMovimientos ({cerrarSesion}) {
                             return response.text()
                         }
                     }
-                    
                 ).then(
                     texto => {
                         if (texto == 'saldo_maximo_excedido'){
                             console.log(texto)
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
                             divErrorRef.current.classList.toggle("errorInputOculto", false)
-                            divErrorRef.current.textContent ="Este movimiento excede el saldo maximo de la caja ($ 99.999.999,99)";
+                            divErrorRef.current.textContent ="Este movimiento provoca que se exceda el saldo máximo de la caja ($ 99.999.999,99)";
                         } else if (texto == 'saldo_negativo'){
                             console.log(texto)
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
@@ -292,55 +279,38 @@ function TablaMovimientos ({cerrarSesion}) {
     const clickSiguiente = () => {
         if (hayOtraPag){
             if (botonesActivos){
-                //setMovs([])
                 setBotonesActivos(false);
-                console.log("sig")
-                
                 setpaginaActual(paginaActual+1);
-                // getMovimientos().then( data => {
-                //     setMovs(data)
-                //     setBotonesActivos(true);
-                // })
             }
-            
-        }
-            
+        }   
     }
 
     const clickAnterior = () => {
         if (paginaActual > 0){
             if (botonesActivos){
-                //setMovs([])
                 setBotonesActivos(false);
                 console.log("ant")
                 setpaginaActual(paginaActual-1);
             }
-        //     getMovimientos().then( data => {
-        //         setMovs(data)
-        //    })
         }
     }
 
     useEffect( () => {
         if (initialized3.current){
             if (initializedPaginaActual.current){
-                console.log("se modifico páginaActual ="+paginaActual)
-                    getMovimientos().then( data => {
-                        setMovs(data)
-                        setBotonesActivos(true);
+                getMovimientos().then( data => {
+                    setMovs(data)
+                    setBotonesActivos(true);
                 })
-            } else{
+            } else {
                 initializedPaginaActual.current = true;
             }
-            
-            
         } else {
             initialized3.current=true;
         }
     }, [paginaActual])
 
     const toggleIngresoEgreso = () => {
-        console.log("gola")
         setIngreso(!ingreso)
     }
 
@@ -352,7 +322,6 @@ function TablaMovimientos ({cerrarSesion}) {
     return (
         <div className="container">
         <table className='tabla-movimientos'>
-            {/* <caption>Cajas</caption> */}
             <thead>
                 <tr>
                     <th className="columnaConcepto-mov">Concepto</th>
@@ -422,16 +391,14 @@ function TablaMovimientos ({cerrarSesion}) {
                     <input className="inputValor" ref={inputValorRef} type="number" maxLength="4" step="0.01" min="0.00" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
                 </div>
                 <div>
-
-
-                <select ref={selectRef} defaultValue={'DEFAULT'} onChange={handleChangeSelect}>
-                    <option value="DEFAULT" disabled>Caja</option>
-                    {
-                        Object.values(cajas).map( (elem) => 
-                            <option key={elem.id} value={elem.id}>{elem.nombre}</option>
-                         )
-                    }
-                </select>
+                    <select ref={selectRef} defaultValue={'DEFAULT'} onChange={handleChangeSelect}>
+                        <option value="DEFAULT" disabled>Caja</option>
+                        {
+                            Object.values(cajas).map( (elem) => 
+                                <option key={elem.id} value={elem.id}>{elem.nombre}</option>
+                            )
+                        }
+                    </select>
                 </div>
                 <div>
                     <button type="button" ref={botonIngresoEgreso} onClick={toggleIngresoEgreso} className={ingreso ? "ingreso" : "egreso"} >{ingreso ? "Ingreso" : "Egreso"}</button>
@@ -440,12 +407,11 @@ function TablaMovimientos ({cerrarSesion}) {
                     <button disabled={selectedOption=='default'} type="submit">Enviar</button>
                 </div>
                 </div>
-                <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
+                    <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
                 </form>
             </div>
                 </>
             : <></>
-            // : <div ref={mensajeExistenciaCajas}>No hay cajas</div>
         }
         </div>
     );
