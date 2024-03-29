@@ -21,10 +21,11 @@
 }
 
 .input-div {
-  display: flex; /* Utiliza el modelo de caja flexible */
-  justify-content: center; /* Centra horizontalmente el contenido */
-  align-items: center; /* Centra verticalmente el contenido */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
   padding: 5px;
+  gap: 4px;
 }
 
 .input-div input {
@@ -35,7 +36,10 @@
   border: 2px solid rgba(255, 255, 255, .2);
   border-radius: 40px;
   padding: 4px;
+  padding-left: 10px;
 }
+
+
 
 .conteinerCampos{
   max-width: 300px;
@@ -61,4 +65,8 @@
 
 .registro-div{
   padding: 5px;
+}
+
+.registro-div a{
+  font-size: 18px;
 }

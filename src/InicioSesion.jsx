@@ -50,7 +50,6 @@ function Signup({toggle, nuevoInicio}){
             nuevoInicio(token);
         } else {
             const err = await response.json();
-            console.log("errors:" +err.error.message);
             if (err.error.code == "user_already_exist")
                 divError.current.textContent = err.error.message;
         }
@@ -84,9 +83,7 @@ function Signup({toggle, nuevoInicio}){
                         </div>
                     </div>
                     <div className="registro-div">
-                        <p>Tenes una cuenta? 
-                            <a href="#" onClick={toggle}>Iniciar sesión</a>
-                        </p>
+                        <p>Tenes una cuenta? <a href="#" onClick={toggle}>Iniciar sesión</a></p>
                     </div>                
                 </form>
             </div>
@@ -127,7 +124,6 @@ function Login({toggle, nuevoInicio}){
         event.preventDefault()
         
         login().then(token => {
-            console.log(token)
             if (token == "user"){
                 divErrorRef.current.textContent = "El usuario no existe"
             } else if (token == "password"){
@@ -165,7 +161,7 @@ function Login({toggle, nuevoInicio}){
             </div>
             </div>
             <div className="registro-div">
-                <p>No tienes cuenta? <a href="#" onClick={toggle}>Registrate</a></p>
+                <p>No tíenes cuenta? <a href="#" onClick={toggle}>Registrate</a></p>
             </div>
             
             </form>

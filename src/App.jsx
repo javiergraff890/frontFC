@@ -61,7 +61,7 @@ function cerrarSesion(){
     <>
       <header>
       <nav>
-        <ul>
+        <ul className={ logueado ? "menu-logueado" : ""}>
           { !logueado ? 
           (
             <> 

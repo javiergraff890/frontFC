@@ -62,12 +62,9 @@ td, th {
 /*A esto lo he hecho antes a mano pero esta vez se lo pedi a gpt*/
 @media screen and (max-width: 600px) {
 
-  ul {
+  .menu-logueado {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Dos columnas iguales */
     gap: 5px; /* Espacio entre los elementos */
   }
-
-  
-
 }
