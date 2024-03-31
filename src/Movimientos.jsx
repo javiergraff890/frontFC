@@ -171,7 +171,6 @@ function TablaMovimientos ({cerrarSesion}) {
                         return response.text()
                     } else if (response.status == 200){
                         const cant_movs = cantidadMovs -1;
-                        console.log("cant_movs "+cant_movs+" cantxpag "+cantidadPorPagina+" paginaactual "+paginaActual);
                         //en codigo pagina inicial es cero
                         //esto se hace para cuando se elimna una pagina con 1 solo elemento, en caso de haber paginas anteriores
                         //con este calculo se muesrta la pagina anterior, caso contrario se mostraba que no habia movimientos
@@ -267,12 +266,10 @@ function TablaMovimientos ({cerrarSesion}) {
                 ).then(
                     texto => {
                         if (texto == 'saldo_maximo_excedido'){
-                            console.log(texto)
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
                             divErrorRef.current.classList.toggle("errorInputOculto", false)
                             divErrorRef.current.textContent ="Este movimiento provoca que se exceda el saldo máximo de la caja ($ 99.999.999,99)";
                         } else if (texto == 'saldo_negativo'){
-                            console.log(texto)
                             divErrorRef.current.classList.toggle("errorInputVisible", true)
                             divErrorRef.current.classList.toggle("errorInputOculto", false)
                             divErrorRef.current.textContent ="Este movimiento provoca un saldo de caja negativo en la caja";
@@ -298,7 +295,6 @@ function TablaMovimientos ({cerrarSesion}) {
         if (paginaActual > 0){
             if (botonesActivos){
                 setBotonesActivos(false);
-                console.log("ant")
                 setpaginaActual(paginaActual-1);
             }
         }

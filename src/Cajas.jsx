@@ -26,6 +26,7 @@ function TablaCajas({userId, cerrarSesion}){
     async function getCajas(){
         if (divcargando.current != null)
             divcargando.current.textContent = "Cargando cajas ...";
+        
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'GET',
@@ -44,7 +45,6 @@ function TablaCajas({userId, cerrarSesion}){
         }
 
          const data = await response.json();
-         console.log('Datos obtenidos (cajas):', data);
 
          if (divcargando.current != null){
             if (data.length == 0)
@@ -52,7 +52,6 @@ function TablaCajas({userId, cerrarSesion}){
             else
                 divcargando.current.textContent = "";
          }
-            
 
          return data;    
     }
@@ -72,20 +71,16 @@ function TablaCajas({userId, cerrarSesion}){
 
         if (botonesActivos){
             setBotonesActivos(false);
-            console.log("toque eliminar al id= "+id)
             const token = localStorage.getItem('token');
             const requestOptions = {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
-                // headers: { 'Content-Type': 'application/json' },
-                // body: JSON.stringify({})
             };
 
             fetch(endpoints.ENDPOINT_DELETE_CAJA+id, requestOptions).then(
                 response => {
-                    console.log(response)
                     if (response.status == 401){
                         swal('Sesion expirada', 'Vuelva a iniciar sesion', )
                         cerrarSesion()
@@ -94,32 +89,21 @@ function TablaCajas({userId, cerrarSesion}){
                             setCajas(data)
                             setBotonesActivos(true);
                         })
-                }
+                    }
             ).catch( error => console.log(error))
         }
 
     }
-    //sacada de GPT!
-    function obtenerFechaExpiracion(jwt) {
-        const payloadBase64 = jwt.split('.')[1]; // Obtiene el payload del JWT (la segunda parte)
-        const payload = JSON.parse(atob(payloadBase64)); // Decodifica el payload Base64 y lo convierte a objeto JSON
-        
-        if (payload.exp) {
-            return new Date(payload.exp * 1000).toString().split('(')[0]; // Multiplica por 1000 para convertir de segundos a milisegundos
-        } else {
-            return null; // El token no tiene una fecha de expiración
-        }
-    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        //const nombre = document.getElementById("nombre").value;
-        //const saldo = document.getElementById("saldo").value;
+
         if (botonesActivos){
             setBotonesActivos(false);
             const nombre = inputNombreRef.current.value;
             const saldo = inputSaldoRef.current.value;
             const token = localStorage.getItem('token');
+            
             const requestOptions = {
                 method: 'POST',
                 headers: { 
@@ -138,11 +122,10 @@ function TablaCajas({userId, cerrarSesion}){
         
             inputNombreRef.current.value = "";
             inputSaldoRef.current.value = "";
+            
             fetch(endpoints.ENDPOINT_POST_CAJA, requestOptions)
             .then(response => {
-                console.log(response)
                 if (response.status == 204){
-                    console.log("se ingreso nombre repetido");
                     setnombreDuplicado(true);
                     setBotonesActivos(true);
                 } else if (response.status == 401){
@@ -161,7 +144,6 @@ function TablaCajas({userId, cerrarSesion}){
                     if (nombreDuplicado)
                         setnombreDuplicado(false);
                 }
-                
             }).catch(error => {
                 console.log(error)
             });
@@ -208,7 +190,6 @@ function TablaCajas({userId, cerrarSesion}){
             }
 
             <div className="divCargando" ref={divcargando}></div>
-            {/* <div> */}
                 <form onSubmit={handleSubmit} action="#" className='form-nueva-caja'>
                     <h2>Nueva caja</h2>
                     <div className="conteiner-nueva-caja">
@@ -219,11 +200,6 @@ function TablaCajas({userId, cerrarSesion}){
                         :'form-nueva-caja-spanDuplicado-oculto'}>Nombre de caja duplicado</p>
                     </div>
                 </form>
-            {/* </div> */}
-
-
-            
-            
         </>
     );
 }
@@ -238,17 +214,6 @@ function GraficoCajas({cajas}){
             totalCajas+=c.saldo;
         })
 
-    
-    //cajas.foreach( c => console.log([c.nombre, c.saldo]))
-    // const data = [
-    //     ["Task", "Hours per Day"],
-    //     ["Work", 11],
-    //     ["Eat", 2],
-    //     ["Commute", 2],
-    //     ["Watch TV", 2],
-    //     ["Sleep", 7],
-    //   ];
-
       const options = {
         title: "Total Cajas : $"+totalCajas,
         titleTextStyle: {fontSize: 15, fontName: 'Arial', bold: true, italic: false, color: '#87711a'},
@@ -256,8 +221,6 @@ function GraficoCajas({cajas}){
          backgroundColor: '#c2d4f2'
       };
     
-
-
     return (
         <div className="divChart">
                 <Chart
@@ -269,7 +232,6 @@ function GraficoCajas({cajas}){
                 />
             
         </div>
-        
       );
 }
 
