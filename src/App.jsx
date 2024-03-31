@@ -21,8 +21,7 @@ useEffect( () => {
   if (!initialized.current){
     initialized.current = true;
     const token = localStorage.getItem('token');
-    console.log("token desde usefect -> app.jsx "+token);
-    console.log("Entreal usefect")
+
     if (token !== null){
       const tokenDecoded = jwtDecode(token);
       setComponenteActivo(1);
@@ -33,19 +32,15 @@ useEffect( () => {
   }
   
 }, [])
-// useEffect( () => console.log("ususario logueado = id: "+userId+" username: "+userName),[userName]);
+
 
 function nuevoInicio(token){
-  if (token !== '401'){
     setLogueado(true)
     const tokenDecoded = jwtDecode(token);
     localStorage.setItem('token', token);
-    console.log(tokenDecoded);
     setComponenteActivo(1);
     setUserId(tokenDecoded.userId);
     setUserName(tokenDecoded.unique_name);
-  }
-  
 }
 
 function cerrarSesion(){
@@ -83,8 +78,6 @@ function cerrarSesion(){
                   <li><a href="#"></a></li> 
                   <li><a href="#" onClick = {cerrarSesion}>Salir</a></li>   
               </>
-              
-                
             ) :
             <></>
             }
@@ -132,8 +125,7 @@ function Usuario({userName, cerrarSesion}){
       buttons: ['Cancelar', 'Aceptar']
     }).then( result => {
       if (result){
-          eliminarCuenta().then( response => {
-            console.log(response)
+            eliminarCuenta().then( response => {
             cerrarSesion();
           });
         }
