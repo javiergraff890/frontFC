@@ -97,6 +97,7 @@ function Login({toggle, nuevoInicio}){
     const divErrorRef = useRef(null);
 
     async function login(){
+        divErrorRef.current.textContent = "Ingresando...";
         const response = await fetch(endpoints.ENDPOINT_POST_LOGIN, {
                 method: 'POST',
                 headers: {

@@ -73,12 +73,12 @@ function TablaMovimientos ({cerrarSesion}) {
             return [];
         }
 
-         const data = await response.json();
+        const data = await response.json();
 
-         return data.reduce( (acc,elemento) => {
+        return data.reduce( (acc,elemento) => {
             acc[elemento.id] = elemento;
             return acc;
-         }, {});    
+        }, {});    
     }
 
     async function getMovimientos(){
