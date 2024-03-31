@@ -160,6 +160,12 @@ td, th {
     justify-content: center;
   }
 
+  .conteiner-divs-cargando{
+    display:flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
   @media only screen and (max-width: 772px){
 
     .tabla-movimientos{

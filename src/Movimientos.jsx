@@ -24,7 +24,8 @@ function TablaMovimientos ({cerrarSesion}) {
     const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
     const [botonesActivos, setBotonesActivos] = useState(false);
-    const divcargando = useRef(false);
+    const divcargandoMov = useRef(false);
+    const divcargandoCaj = useRef(false);
     const initializedPaginaActual = useRef(false);
     const divErrorRef = useRef(false);
     const botonIngresoEgreso = useRef(false);
@@ -56,6 +57,8 @@ function TablaMovimientos ({cerrarSesion}) {
     // }, [movs]);
 
     async function getCajas(){
+        if (divcargandoCaj.current != null)
+            divcargandoCaj.current.textContent = "Cargando cajas ...";
         const token = localStorage.getItem('token');
         const requestOptions = {
             method: 'GET',
@@ -75,6 +78,12 @@ function TablaMovimientos ({cerrarSesion}) {
 
         const data = await response.json();
 
+        if (divcargandoCaj.current != null)
+            if (data.length == 0)
+                divcargandoCaj.current.textContent = "No hay cajas";
+            else
+                divcargandoCaj.current.textContent = "";
+
         return data.reduce( (acc,elemento) => {
             acc[elemento.id] = elemento;
             return acc;
@@ -82,8 +91,8 @@ function TablaMovimientos ({cerrarSesion}) {
     }
 
     async function getMovimientos(){
-        if (divcargando.current != null)
-            divcargando.current.textContent = "Cargando movimientos ...";
+        if (divcargandoMov.current != null)
+            divcargandoMov.current.textContent = "Cargando movimientos ...";
         
         const token = localStorage.getItem('token');
         const requestOptions = {
@@ -110,11 +119,11 @@ function TablaMovimientos ({cerrarSesion}) {
         sethayOtraPag(data.siguiente);
         setCantidadMovs(data.cantidadMovs);
 
-        if (divcargando.current != null)
+        if (divcargandoMov.current != null)
             if (data.movs.length == 0)
-                divcargando.current.textContent = "No hay movimientos";
+                divcargandoMov.current.textContent = "No hay movimientos";
             else{
-                divcargando.current.textContent = "";
+                divcargandoMov.current.textContent = "";
         }
          return data.movs;    
     }
@@ -350,7 +359,11 @@ function TablaMovimientos ({cerrarSesion}) {
         }
         </tbody>
         </table>
-       <div className="divCargando" ref={divcargando}></div>
+        <div className="conteiner-divs-cargando">
+            <div className="divCargando" ref={divcargandoMov}></div>
+            <div className="divCargando" ref={divcargandoCaj}></div>
+        </div>
+       
         {
             (Object.keys(cajas).length > 0) ?
             <>
