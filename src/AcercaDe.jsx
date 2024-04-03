@@ -19,7 +19,8 @@ export default function AcercaDe(){
                         <button>SQL SERVER</button>
                     </a>
                 </div>
-                <p>Se utilizó además <a href="https://jwt.io/">JWT</a> para la autenticación de los usuarios, <a href="https://www.nuget.org/packages/BCrypt.Net-Next/">BCrypt</a> para hashear las passwords</p>
+                <p>Se utilizó además <a href="https://jwt.io/">JWT</a> para la autenticación de los usuarios, <a href="https://www.nuget.org/packages/BCrypt.Net-Next/">BCrypt</a> para hashear las passwords.</p>
+                <p>En el despliegue decidí incluir el sitio que genera la herramienta Swagger en el cual se documenta como se puede acceder a los endponts, allí se pueden encontrar las formas que ofrece el backend para poder manipular a los usuarios, las cajas y los movimientos. Se puede visitar en el siguiente <a href="https://www.apiflujocaja.somee.com/swagger/index.html">Link</a>.</p>
             </div>
             <a href="https://github.com/javiergraff890/backendFC">
                 <div className="divLinkGit">
@@ -27,7 +28,7 @@ export default function AcercaDe(){
                         <box-icon name='github' type='logo' color='#f8f2f2' ></box-icon>
                     </div>
                     <div>
-                        <p>Codigo fuente backend</p>
+                        <p>Codigo fuente Backend</p>
                     </div>
                 </div>
             </a>
@@ -39,7 +40,8 @@ export default function AcercaDe(){
                         <button>React</button>
                     </a>              
                 </div>
-                <p>Se utilizó <a href="https://vitejs.dev/">Vite</a> como soporte, la librería <a href="https://sweetalert2.github.io/">Sweet alert</a> para mostrar avisos, <a href="https://www.react-google-charts.com/">React Google Charts</a> para gráficos de cajas y <a href="https://boxicons.com/">Boxicons</a> para iconos de botones</p>
+                <p>Se utilizó <a href="https://vitejs.dev/">Vite</a> como soporte, la librería <a href="https://sweetalert2.github.io/">Sweet alert</a> para mostrar avisos, <a href="https://www.react-google-charts.com/">React Google Charts</a> para gráficos de cajas y <a href="https://boxicons.com/">Boxicons</a> para iconos de botones.</p>
+                <p>Solamente se usaron los hooks useState, useEffect y useRef</p>
             </div>
             <a href="https://github.com/javiergraff890/frontFC">
                 <div className="divLinkGit">
@@ -47,7 +49,7 @@ export default function AcercaDe(){
                         <box-icon name='github' type='logo' color='#f8f2f2' ></box-icon>
                     </div>
                     <div>
-                        <p>Codigo fuente frontend</p>
+                        <p>Codigo fuente Frontend</p>
                     </div>
                 </div>
             </a>

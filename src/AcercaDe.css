@@ -12,6 +12,21 @@ h2 {
     margin-top: 10px;
     color:bisque
 }
+
+.container-acercaDe a{
+    color: #ffffff; /* Color de texto blanco */
+}
+
+.container-acercaDe a:hover{
+    color: #858080; /* Color de texto blanco */
+}
+
+.divLinkGit{
+    font-size: 25px;
+}
+
+
+
 .divBotones{
     display: flex;
     justify-content:center;
@@ -23,6 +38,7 @@ h2 {
     padding: 5px;
     width: 100px;
     height: 40px;
+    font-weight: bold;
 
 }
 

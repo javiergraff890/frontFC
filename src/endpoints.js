@@ -1,5 +1,6 @@
 //const base = 'https://localhost:7178';
-const base = 'https://7f3f-181-229-197-65.ngrok-free.app'
+const base = 'https://www.apiflujocaja.somee.com'
+//const base = 'https://7f3f-181-229-197-65.ngrok-free.app'
 const endpoints = {
     ENDPOINT_SUBMIT_SIGNUP : base+'/user',
     ENDPOINT_POST_LOGIN : base+'/user/Login',
