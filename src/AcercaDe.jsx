@@ -66,9 +66,13 @@ export default function AcercaDe(){
                     <img src="/src/img/ejemplo.png"></img>
                 </div>
                 <h2>Sesiones</h2>
-                <p>Cuando un usuario se loguea o crea una cuenta nueva, se genera un token que tiene una validez de 24 horas. Pasado ese tiempo la sesión caduca y se vuelven a solicitar las credenciales, en este período la sesión sigue activa sin importar si el navegador se cierra o el dispositivo se apague </p>
+                    <p>Cuando un usuario se loguea o crea una cuenta nueva, se genera un token que tiene una validez de 24 horas. Pasado ese tiempo la sesión caduca y se vuelven a solicitar las credenciales, en este período la sesión sigue activa sin importar si el navegador se cierra o el dispositivo se apague </p>
+                <h2>Hosting</h2>
+                    <p>La Api y la base de datos estan alojadas en la plataforma <a href="https://somee.com/">Somee</a></p>
+                    <p>El frontend esta alojado en la plataforma <a href="https://firebase.google.com/">Firebase</a></p>
+                    <p>Por el momento utilicé planes gratuitos por lo que la aplicación puede correr un poco lenta</p>
                 <h2>Gracias</h2>
-                <p>Este proyecto fue realizado con un objetivo de aprendizaje, ante cualquier fallo o comportamiento inesperado se agradece un reporte al siguiente correo <a href="mailto:jjaviergraff@gmail.com">jjaviergraff@gmail.com</a> </p>
+                    <p>Este proyecto fue realizado con un objetivo de aprendizaje, ante cualquier fallo o comportamiento inesperado se agradece un reporte al siguiente correo <a href="mailto:jjaviergraff@gmail.com">jjaviergraff@gmail.com</a> </p>
             </div>
             
             
