@@ -32,7 +32,7 @@ function TablaCajas({userId, cerrarSesion}){
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'ngrok-skip-browser-warning' : 'skip-browser-warning'
+                //'ngrok-skip-browser-warning' : 'skip-browser-warning'
             }
         };
 

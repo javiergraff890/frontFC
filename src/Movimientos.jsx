@@ -64,7 +64,7 @@ function TablaMovimientos ({cerrarSesion}) {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'ngrok-skip-browser-warning' : 'skip-browser-warning'
+                //'ngrok-skip-browser-warning' : 'skip-browser-warning'
             }
         };
 
@@ -99,7 +99,7 @@ function TablaMovimientos ({cerrarSesion}) {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'ngrok-skip-browser-warning' : 'skip-browser-warning'
+                //'ngrok-skip-browser-warning' : 'skip-browser-warning'
             }
         };
 

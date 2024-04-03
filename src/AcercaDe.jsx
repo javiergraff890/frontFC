@@ -54,7 +54,7 @@ export default function AcercaDe(){
                 </div>
             </a>
             <div className="mensajeInferior">
-                <h2>Diseño responsive</h2>
+                <h2>Diseño Responsive</h2>
                 <p>
                     El sistema está originalmente diseñado para un navegador web de un dispositivo con una pantalla no táctil como por ejemplo una notebook o una PC 
                 </p>

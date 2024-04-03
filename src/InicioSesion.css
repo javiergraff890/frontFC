@@ -30,6 +30,7 @@
 
 .input-div input {
   height: 100%;
+  color:rgb(247, 241, 241);
   background: transparent;
   border:none;
   outline: none;
@@ -69,4 +70,9 @@
 
 .registro-div a{
   font-size: 18px;
+  color:rgb(199, 165, 230)
+}
+
+.registro-div a:hover{
+  color:rgb(109, 78, 139)
 }
