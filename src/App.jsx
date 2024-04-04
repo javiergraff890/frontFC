@@ -14,12 +14,12 @@ const [logueado, setLogueado] = useState(false);
 const [userName, setUserName] = useState('');
 const [userId, setUserId] = useState(-1);
 const [componenteActivo, setComponenteActivo] = useState(0);
-const initialized = useRef(false);
+//const initialized = useRef(false);
 
 useEffect( () => {
 
-  if (!initialized.current){
-    initialized.current = true;
+  //if (!initialized.current){
+  //  initialized.current = true;
     const token = localStorage.getItem('token');
 
     if (token !== null){
@@ -29,7 +29,7 @@ useEffect( () => {
       setUserName(tokenDecoded.unique_name);
       setLogueado(true)
     }
-  }
+  //}
   
 }, [])
 
