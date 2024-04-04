@@ -18,15 +18,15 @@ function TablaMovimientos ({cerrarSesion}) {
     const selectRef = useRef(null);
     //const initialized = useRef(false);
     //const initializedmov = useRef(false);
-    const initialized2 = useRef(false);
-    const initialized3 = useRef(false);
+    //const initialized2 = useRef(false);
+    //const initialized3 = useRef(false);
     const [paginaActual, setpaginaActual] = useState(0);
     const [cantidadPorPagina, setcantidadPorPagina] = useState(5);
     const [hayOtraPag, sethayOtraPag] = useState(true);
     const [botonesActivos, setBotonesActivos] = useState(false);
     const divcargandoMov = useRef(false);
     const divcargandoCaj = useRef(false);
-    const initializedPaginaActual = useRef(false);
+    //const initializedPaginaActual = useRef(false);
     const divErrorRef = useRef(false);
     const botonIngresoEgreso = useRef(false);
     const [cantidadMovs, setCantidadMovs] = useState(1);
@@ -130,21 +130,22 @@ function TablaMovimientos ({cerrarSesion}) {
 
     //useeffect para la primer carga de movimientos y cajas, se espera a que ambas promesas se resuelvan
     useEffect( () => {
-        if (initialized2.current){
+        //if (initialized2.current){
             
             Promise.all([
                 getCajas(),
                 getMovimientos()
             ]).then( ([listacajas,listamovimientos]) => {
                 setCajas(listacajas)
+                console.log(listacajas)
                 setMovs(listamovimientos)
                 setBotonesActivos(true);
             }).catch( error => {
                 console.error('Error al cargar datos:', error);
             })
-        } else {
-            initialized2.current = true;
-        }
+        // } else {
+        //     initialized2.current = true;
+        // }
         
     }, []);
 
@@ -301,18 +302,18 @@ function TablaMovimientos ({cerrarSesion}) {
     }
 
     useEffect( () => {
-        if (initialized3.current){
-            if (initializedPaginaActual.current){
+        // if (initialized3.current){
+        //     if (initializedPaginaActual.current){
                 getMovimientos().then( data => {
                     setMovs(data)
                     setBotonesActivos(true);
                 })
-            } else {
-                initializedPaginaActual.current = true;
-            }
-        } else {
-            initialized3.current=true;
-        }
+        //     } else {
+        //         initializedPaginaActual.current = true;
+        //     }
+        // } else {
+        //     initialized3.current=true;
+        // }
     }, [paginaActual])
 
     const toggleIngresoEgreso = () => {
@@ -338,20 +339,23 @@ function TablaMovimientos ({cerrarSesion}) {
             </thead>
             <tbody>
         {
+            movs != null ?
             movs.map( (elem) =>
             <tr key={elem.id}>
                 <td className="columnaConcepto-mov"><p className="p-nombre" title={elem.concepto}>{elem.concepto}</p></td>
                 <td className="columnaFecha-mov font-columnaFecha desc-visible">{formatFecha(elem.fecha)}</td>
                 <td className="columnaValor-mov">$ {elem.valor}</td>
                 <td className="columnaCaja-mov font-columnaCaja">
-                    <p className="p-nombre" title={cajas[elem.idCaja].nombre}> 
+                    <p className="p-nombre" title={ cajas[elem.idCaja] !=null ? cajas[elem.idCaja].nombre : "Cargando..."}> 
                         <span className="desc-oculto spanCaja">Caja:&nbsp;</span>
-                        {cajas[elem.idCaja].nombre}
+                        {cajas[elem.idCaja] !=null ? cajas[elem.idCaja].nombre : "Cargando..."}
                     </p>
                 </td>
                 <td className="columnaEliminar-mov"> {botonesActivos ? <button onClick={() => eventEliminar(elem.id)}><p className="desc-oculto">Eliminar </p>X</button> : <></> }</td>
             </tr>
             )
+            :
+            <p>movs es null aca</p>
         }
         </tbody>
         </table>
@@ -361,7 +365,7 @@ function TablaMovimientos ({cerrarSesion}) {
         </div>
        
         {
-            (Object.keys(cajas).length > 0) ?
+            (movs.length > 0) ?
             <>
             <div className="divNavegacionPaginas">
                 <div>
@@ -385,41 +389,44 @@ function TablaMovimientos ({cerrarSesion}) {
                 }
                 
             </div>
-        <div className="divNuevoMov">
-             
-                <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
-                <h2>Nuevo Movimiento</h2>
-                <div className="container-nuevo-mov">
-                <div>
-                    <input className="conceptoInput" ref={inputConceptoRef} type="text"  maxLength="50" id="concepto" name="concepto" placeholder='Concepto' required></input>
-                </div>
-                <div className="divValorInput">
-                    <div className={ ingreso ? "divSignomas" : "divSignomenos"}>
-                    {ingreso ? "+$ " : "- $ "}
-                    </div >
-                    <input className="inputValor" ref={inputValorRef} type="number" maxLength="4" step="0.01" min="0.00" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
-                </div>
-                <div>
-                    <select ref={selectRef} defaultValue={'DEFAULT'} onChange={handleChangeSelect}>
-                        <option value="DEFAULT" disabled>Caja</option>
-                        {
-                            Object.values(cajas).map( (elem) => 
-                                <option key={elem.id} value={elem.id}>{elem.nombre}</option>
-                            )
-                        }
-                    </select>
-                </div>
-                <div>
-                    <button type="button" ref={botonIngresoEgreso} onClick={toggleIngresoEgreso} className={ingreso ? "ingreso" : "egreso"} >{ingreso ? "Ingreso" : "Egreso"}</button>
-                </div>
-                <div>
-                    <button disabled={selectedOption=='default'} type="submit">Enviar</button>
-                </div>
-                </div>
+            {(Object.keys(cajas).length > 0) ?
+                <div className="divNuevoMov">
+                
+                    <form onSubmit={handleSubmit} action="#" className='form-nuevo-movimiento'>
+                    <h2>Nuevo Movimiento</h2>
+                    <div className="container-nuevo-mov">
+                    <div>
+                        <input className="conceptoInput" ref={inputConceptoRef} type="text"  maxLength="50" id="concepto" name="concepto" placeholder='Concepto' required></input>
+                    </div>
+                    <div className="divValorInput">
+                        <div className={ ingreso ? "divSignomas" : "divSignomenos"}>
+                        {ingreso ? "+$ " : "- $ "}
+                        </div >
+                        <input className="inputValor" ref={inputValorRef} type="number" maxLength="4" step="0.01" min="0.00" max="99999999.99" id="valor" name="valor" placeholder='Valor' required></input>
+                    </div>
+                    <div>
+                        <select ref={selectRef} defaultValue={'DEFAULT'} onChange={handleChangeSelect}>
+                            <option value="DEFAULT" disabled>Caja</option>
+                            {
+                                Object.values(cajas).map( (elem) => 
+                                    <option key={elem.id} value={elem.id}>{elem.nombre}</option>
+                                )
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <button type="button" ref={botonIngresoEgreso} onClick={toggleIngresoEgreso} className={ingreso ? "ingreso" : "egreso"} >{ingreso ? "Ingreso" : "Egreso"}</button>
+                    </div>
+                    <div>
+                        <button disabled={selectedOption=='default'} type="submit">Enviar</button>
+                    </div>
+                    </div>
                     <div ref={divErrorRef} id="mensajeErrorOculto" className="errorInput"></div>
-                </form>
-            </div>
-                </>
+                    </form>
+                </div>
+                : <></>
+            }
+            </>
             : <></>
         }
         </div>
