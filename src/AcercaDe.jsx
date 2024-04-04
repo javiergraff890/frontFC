@@ -63,7 +63,8 @@ export default function AcercaDe(){
                 <div className="container-ejemplo">
                     <h3>Ejemplo de visualización posando el mouse en el concepto</h3>
                     <p>Este comportamiento no aplica para pantallas táctiles</p>
-                    <img src="/src/img/ejemplo.png"></img>
+                    {/* <img src="src/img/ejemplo.png"></img> */}
+                    <img src="https://i.ibb.co/4m3LbLN/ejemplo.png"></img>
                 </div>
                 <h2>Sesiones</h2>
                     <p>Cuando un usuario se loguea o crea una cuenta nueva, se genera un token que tiene una validez de 24 horas. Pasado ese tiempo la sesión caduca y se vuelven a solicitar las credenciales, en este período la sesión sigue activa sin importar si el navegador se cierra o el dispositivo se apague </p>
