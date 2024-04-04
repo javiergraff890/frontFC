@@ -16,7 +16,7 @@ export default function Cajas({userId, cerrarSesion}){
 function TablaCajas({userId, cerrarSesion}){
     const [cajas, setCajas] = useState([]);
     const [nombreDuplicado, setnombreDuplicado] = useState(false)
-    const initialized = useRef(false);
+    //const initialized = useRef(false);
     const inputNombreRef = useRef(null);
     const inputSaldoRef = useRef(null);
     const [botonesActivos, setBotonesActivos] = useState(false);
@@ -57,14 +57,14 @@ function TablaCajas({userId, cerrarSesion}){
     }
 
     useEffect( () => {
-        if (initialized.current){
+        //if (initialized.current){
             getCajas().then( data => {
                 setCajas(data)
                 setBotonesActivos(true);
             })
-        } else {
-            initialized.current = true;
-        }
+        // } else {
+        //     initialized.current = true;
+        // }
     }, [])
     
     const eventEliminar = (id) => {
