@@ -168,6 +168,10 @@ td, th {
 
   @media only screen and (max-width: 772px){
 
+    .columnaFecha-mov {
+        white-space: normal;
+    }
+
     .tabla-movimientos{
         width: 560px;
     }
